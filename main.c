@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define A_HIGH 14
 #define A_LOW 1
@@ -32,13 +33,15 @@ seat *initSeat(int,int);
 table *initTable(int);
 void freeTable(table *);
 void printTable(table *);
+int drawCard();
 
 int main(int argc,char **argv) {
+	
+	// Seed random number generator
+	srand(time(NULL));
 
 	table *t = initTable(9);
-
 	printTable(t);
-	
 	freeTable(t);
 
 	return 0;
@@ -115,5 +118,11 @@ void printTable(table *t) {
 		printf("ID: %i, Balance: %i, Addr: %p, Next %p\n",temp->id,temp->balance,temp,temp->next);
 		temp = temp->next;
 	}
+
+}
+
+int drawCard() {
+	
+	return (rand() % 52 + 1);
 
 }
