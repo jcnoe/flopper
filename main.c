@@ -33,7 +33,8 @@ seat *initSeat(int,int);
 table *initTable(int);
 void freeTable(table *);
 void printTable(table *);
-int drawCard();
+int randNumInRange(int,int);
+char drawCard();
 
 int main(int argc,char **argv) {
 	
@@ -121,8 +122,16 @@ void printTable(table *t) {
 
 }
 
-int drawCard() {
+int randNumInRange(int min,int max) {
+
+	return (rand() % (max + 1- min) + min);
+
+}
+
+char drawCard() {
 	
-	return (rand() % 52 + 1);
+	int index;
+
+	return randNumInRange(0,51);
 
 }
