@@ -12,18 +12,31 @@
 #define Q 12
 #define J 11
 
+#define TRUE 1
+#define FALSE 0
+
+typedef struct card{
+	unsigned char rank;
+	unsigned char suit;
+} card;
+
+typedef struct deck{
+	card cards[52];
+	unsigned char dealt[52];
+} deck;
+
 // Structure definitions
 typedef struct seat{
 	int id;
 	int balance;
-	unsigned char cards[2];
+	card cards[2];
 	int active;
 	struct seat *next;
 } seat;
 
 typedef struct table{
 	int seats;
-	unsigned char cards[3];
+	card cards[3];
 	int bb;
 	seat *button;
 } table;
@@ -34,7 +47,8 @@ table *initTable(int);
 void freeTable(table *);
 void printTable(table *);
 int randNumInRange(int,int);
-char drawCard();
+deck *initDeck();
+card *drawCard(deck *);
 
 int main(int argc,char **argv) {
 	
@@ -128,10 +142,22 @@ int randNumInRange(int min,int max) {
 
 }
 
-char drawCard() {
+card *drawCard(deck *d) {
 	
-	int index;
+	int index,dealing;
 
-	return randNumInRange(0,51);
+	dealing = TRUE;
+
+	index = randNumInRange(0,51);
+	while (dealing) { 
+		if (d->dealt[index] == FALSE) {
+			// add card selection
+			dealing = FALSE;
+			d->dealt[index] = TRUE;
+		}
+		else {
+			index = randNumInRange(0,51);
+		}
+	}
 
 }
