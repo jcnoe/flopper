@@ -11,7 +11,7 @@
 #define K 13
 #define Q 12
 #define J 11
-
+#define DECKSIZE 52
 #define TRUE 1
 #define FALSE 0
 
@@ -21,8 +21,8 @@ typedef struct card{
 } card;
 
 typedef struct deck{
-	card cards[52];
-	unsigned char dealt[52];
+	card *cards[52];
+	unsigned char dealt[DECKSIZE];
 } deck;
 
 // Structure definitions
@@ -48,7 +48,9 @@ void freeTable(table *);
 void printTable(table *);
 int randNumInRange(int,int);
 deck *initDeck();
+void printDeck(deck *);
 card *drawCard(deck *);
+void freeDeck(deck *);
 
 int main(int argc,char **argv) {
 	
@@ -58,6 +60,9 @@ int main(int argc,char **argv) {
 	table *t = initTable(9);
 	printTable(t);
 	freeTable(t);
+
+	deck *d = initDeck();
+	freeDeck(d);
 
 	return 0;
 
@@ -138,7 +143,45 @@ void printTable(table *t) {
 
 int randNumInRange(int min,int max) {
 
-	return (rand() % (max + 1- min) + min);
+	return (rand() % (max + 1 - min) + min);
+
+}
+
+deck *initDeck() {
+
+	deck *d = (deck *)malloc(sizeof(deck));
+	//d->cards = (card *)malloc(sizeof(card) * DECKSIZE);
+	int i,j,index;
+	char suits[4] = {'c','d','h','s'};
+
+	// Instead of this, use double pointers? 
+	// That way pointers can be sent to seats and table instead of whatever this is
+	for (i = 0;i < DECKSIZE;i++) {
+		d->cards[i] = (card *)malloc(sizeof(card));
+	}
+
+	index = 0;
+	for (i = 0;i < 4;i++) {
+		for (j = 0;j < 13;j++) {
+			d->cards[index]->rank = j;
+			d->cards[index]->suit = suits[i];
+			d->dealt[index] = FALSE;
+			index++;
+		}
+	}
+
+	printDeck(d);
+	return d;
+
+}
+
+void printDeck(deck *d) {
+
+	int i;
+
+	for (i = 0;i < DECKSIZE;i++) {
+		printf("Index %i: Rank %i, Suit %c, drawn %i\n",i,d->cards[i]->rank,d->cards[i]->suit,d->dealt[i]);
+	}
 
 }
 
@@ -159,5 +202,17 @@ card *drawCard(deck *d) {
 			index = randNumInRange(0,51);
 		}
 	}
+
+}
+
+void freeDeck(deck *d) {
+
+	int i;
+	
+	for (i = 0;i < DECKSIZE;i++) {
+		free(d->cards[i]);
+	}
+
+	free(d);
 
 }
