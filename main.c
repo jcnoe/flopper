@@ -48,12 +48,16 @@ void freeTable(table *);
 void printTable(table *);
 int randNumInRange(int,int);
 deck *initDeck();
+void printCard(card *);
 void printDeck(deck *);
 card *drawCard(deck *);
 void freeDeck(deck *);
 
 int main(int argc,char **argv) {
 	
+	int i;
+	card *c;
+
 	// Seed random number generator
 	srand(time(NULL));
 
@@ -62,6 +66,12 @@ int main(int argc,char **argv) {
 	freeTable(t);
 	
 	deck *d = initDeck();
+	for (i = 0; i < DECKSIZE;i++) {
+		c = drawCard(d);
+		printf("Draw %i ",i);
+		printCard(c);
+	}
+
 	freeDeck(d);
 
 	return 0;
@@ -180,9 +190,15 @@ deck *initDeck() {
 		}
 	}
 
-	printDeck(d);
+	//printDeck(d);
 	return d;
 
+}
+
+void printCard(card *c) {
+
+	printf("Rank %i, Suit %c\n",c->rank,c->suit);
+	
 }
 
 void printDeck(deck *d) {
@@ -190,7 +206,9 @@ void printDeck(deck *d) {
 	int i;
 
 	for (i = 0;i < DECKSIZE;i++) {
-		printf("Index %i: Rank %i, Suit %c, drawn %i\n",i,d->cards[i]->rank,d->cards[i]->suit,d->dealt[i]);
+		//printf("Index: %i ");
+		printCard(d->cards[i]);
+		//printf("Index %i: Rank %i, Suit %c, drawn %i\n",i,d->cards[i]->rank,d->cards[i]->suit,d->dealt[i]);
 	}
 
 }
@@ -204,14 +222,17 @@ card *drawCard(deck *d) {
 	index = randNumInRange(0,51);
 	while (dealing) { 
 		if (d->dealt[index] == FALSE) {
-			// add card selection
 			dealing = FALSE;
 			d->dealt[index] = TRUE;
+			return d->cards[index];
 		}
 		else {
 			index = randNumInRange(0,51);
 		}
 	}
+
+	// This should never happen
+	return NULL;
 
 }
 
