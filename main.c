@@ -29,14 +29,14 @@ typedef struct deck{
 typedef struct seat{
 	int id;
 	int balance;
-	card cards[2];
+	card *cards[2];
 	int active;
 	struct seat *next;
 } seat;
 
 typedef struct table{
 	int seats;
-	card cards[3];
+	card *cards[3];
 	int bb;
 	seat *button;
 } table;
@@ -60,7 +60,7 @@ int main(int argc,char **argv) {
 	table *t = initTable(9);
 	printTable(t);
 	freeTable(t);
-
+	
 	deck *d = initDeck();
 	freeDeck(d);
 
@@ -69,11 +69,13 @@ int main(int argc,char **argv) {
 }
 
 seat *initSeat(int balance,int id) {
-	
+
 	// Allocate seat and assign initial values
 	seat *s = (seat *)malloc(sizeof(seat));
 	s->balance = balance;
 	s->id = id;
+	s->cards[0] = (card *)malloc(sizeof(card));
+	s->cards[1] = (card *)malloc(sizeof(card));
 	s->next = NULL;
 
 	return s;
@@ -90,7 +92,10 @@ table *initTable(int num_seats) {
 	table *t = (table *)malloc(sizeof(table));
 	t->seats = num_seats;
 	t->bb = 2;
-	
+	t->cards[0] = (card *)malloc(sizeof(card));
+	t->cards[1] = (card *)malloc(sizeof(card));
+	t->cards[2] = (card *)malloc(sizeof(card));
+
 	// Create first seat
 	t->button = initSeat(balance,0);
 	curr = t->button;
@@ -119,10 +124,15 @@ void freeTable(table *t) {
 	for (i = 1;i <= t->seats;i++) {
 		temp = button;
 		button = button->next;
+		free(temp->cards[0]);
+		free(temp->cards[1]);
 		free(temp);
 	}
 
 	// Free table struct
+	free(t->cards[0]);
+	free(t->cards[1]);
+	free(t->cards[2]);
 	free(t);
 
 }
