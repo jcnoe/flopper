@@ -182,7 +182,7 @@ deck *initDeck() {
 
 	index = 0;
 	for (i = 0;i < 4;i++) {
-		for (j = 0;j < 13;j++) {
+		for (j = 1;j < 14;j++) {
 			d->cards[index]->rank = j;
 			d->cards[index]->suit = suits[i];
 			d->dealt[index] = FALSE;
