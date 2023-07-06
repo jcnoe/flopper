@@ -52,6 +52,9 @@ void printCard(card *);
 void printDeck(deck *);
 card *drawCard(deck *);
 void freeDeck(deck *);
+void resetDeck(deck *);
+void resetSeat(seat *);
+void resetTable(table *);
 
 int main(int argc,char **argv) {
 	
@@ -63,7 +66,7 @@ int main(int argc,char **argv) {
 
 	table *t = initTable(9);
 	printTable(t);
-	freeTable(t);
+	//freeTable(t);
 	
 	deck *d = initDeck();
 	for (i = 0; i < DECKSIZE;i++) {
@@ -72,6 +75,10 @@ int main(int argc,char **argv) {
 		printCard(c);
 	}
 
+	resetDeck(d);
+	resetTable(t);
+	
+	freeTable(t);
 	freeDeck(d);
 
 	return 0;
@@ -87,6 +94,7 @@ seat *initSeat(int balance,int id) {
 	s->cards[0] = (card *)malloc(sizeof(card));
 	s->cards[1] = (card *)malloc(sizeof(card));
 	s->next = NULL;
+	s->active = TRUE;
 
 	return s;
 
@@ -245,5 +253,41 @@ void freeDeck(deck *d) {
 	}
 
 	free(d);
+
+}
+
+void resetDeck(deck *d) {
+
+	int i;
+
+	for (i = 0;i < DECKSIZE;i++) {
+		d->dealt[i] = FALSE;
+	}
+
+}
+
+void resetSeat(seat *s) {
+
+	s->active = TRUE;
+	s->cards[0] = NULL;
+	s->cards[1] = NULL;
+
+}
+
+void resetTable(table *t) {
+
+	int i;
+	seat *temp;
+	seat *button = t->button;
+
+	for (i = 0;i < t->seats;i++) {
+		temp = button;
+		button = button->next;
+		resetSeat(temp);
+	}
+
+	t->cards[0] = NULL;
+	t->cards[1] = NULL;
+	t->cards[2] = NULL;
 
 }
