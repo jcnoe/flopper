@@ -57,6 +57,8 @@ void freeDeck(deck *);
 void resetDeck(deck *);
 void resetSeat(seat *);
 void resetTable(table *);
+void advanceButton(table *);
+void printButton(table *);
 
 int main(int argc,char **argv) {
 	
@@ -92,6 +94,12 @@ int main(int argc,char **argv) {
 			s = s->next;
 		}
 	//}
+
+	printButton(t);
+	advanceButton(t);
+	printButton(t);
+	advanceButton(t);
+	printButton(t);
 
 	resetDeck(d);
 	resetTable(t);
@@ -337,4 +345,17 @@ void printSeatCards(seat *s) {
 
 void printSeatBalance(seat *s) {
 	printf("Balance: %i\n",s->balance);
+}
+
+void advanceButton(table *t) {
+
+	seat *s;
+	
+	s = t->button->next;
+	t->button = s;
+
+}
+
+void printButton(table *t) {
+	printf("Button: %p\n",t->button);
 }
