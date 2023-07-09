@@ -5,60 +5,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define A_HIGH 14
-#define A_LOW 1
-#define K 13
-#define Q 12
-#define J 11
-#define DECKSIZE 52
-#define TRUE 1
-#define FALSE 0
-
-typedef struct card{
-	unsigned char rank;
-	unsigned char suit;
-} card;
-
-typedef struct deck{
-	card *cards[DECKSIZE];
-	unsigned char dealt[DECKSIZE];
-} deck;
-
-// Structure definitions
-typedef struct seat{
-	int id;
-	int balance;
-	card *cards[2];
-	int active;
-	struct seat *next;
-} seat;
-
-typedef struct table{
-	int seats;
-	card *cards[3];
-	int bb;
-	seat *button;
-} table;
+#include "structures.h"
+#include "print.h"
 
 // Prototypes
 seat *initSeat(int,int);
 table *initTable(int);
 void freeTable(table *);
-void printTable(table *);
 int randNumInRange(int,int);
 deck *initDeck();
 void printCard(card *);
-void printSeatCards(seat *);
-void printSeatBalance(seat *);
-void printDeck(deck *);
 card *drawCard(deck *);
 void freeDeck(deck *);
 void resetDeck(deck *);
 void resetSeat(seat *);
 void resetTable(table *);
 void advanceButton(table *);
-void printButton(table *);
 
 int main(int argc,char **argv) {
 	
@@ -181,20 +143,6 @@ void freeTable(table *t) {
 
 }
 
-void printTable(table *t) {
-
-	seat *temp;
-	int i;
-	
-	temp = t->button;
-
-	for (i = 0;i < t->seats;i++) {
-		printf("ID: %i, Balance: %i, Addr: %p, Next %p\n",temp->id,temp->balance,temp,temp->next);
-		temp = temp->next;
-	}
-
-}
-
 int randNumInRange(int min,int max) {
 
 	return (rand() % (max + 1 - min) + min);
@@ -226,41 +174,6 @@ deck *initDeck() {
 
 	//printDeck(d);
 	return d;
-
-}
-
-void printCard(card *c) {
-
-	// Format rank for easier viewing
-	switch (c->rank) {
-		case A_LOW:
-			printf("A");
-			break;
-		case J:
-			printf("J");
-			break;
-		case Q:
-			printf("Q");
-			break;
-		case K:
-			printf("K");
-			break;
-		default:
-			printf("%i",c->rank);
-	}
-	printf("%c",c->suit);
-	
-}
-
-void printDeck(deck *d) {
-
-	int i;
-
-	for (i = 0;i < DECKSIZE;i++) {
-		//printf("Index: %i ");
-		printCard(d->cards[i]);
-		//printf("Index %i: Rank %i, Suit %c, drawn %i\n",i,d->cards[i]->rank,d->cards[i]->suit,d->dealt[i]);
-	}
 
 }
 
@@ -335,18 +248,6 @@ void resetTable(table *t) {
 
 }
 
-void printSeatCards(seat *s) {
-	printf("Cards: ");
-	printCard(s->cards[0]);
-	printf(" ");
-	printCard(s->cards[1]);
-	printf("\n");
-}
-
-void printSeatBalance(seat *s) {
-	printf("Balance: %i\n",s->balance);
-}
-
 void advanceButton(table *t) {
 
 	seat *s;
@@ -356,6 +257,3 @@ void advanceButton(table *t) {
 
 }
 
-void printButton(table *t) {
-	printf("Button: %p\n",t->button);
-}
