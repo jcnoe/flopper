@@ -21,7 +21,7 @@ typedef struct card{
 } card;
 
 typedef struct deck{
-	card *cards[52];
+	card *cards[DECKSIZE];
 	unsigned char dealt[DECKSIZE];
 } deck;
 
@@ -71,7 +71,7 @@ int main(int argc,char **argv) {
 	deck *d = initDeck();
 	for (i = 0; i < DECKSIZE;i++) {
 		c = drawCard(d);
-		printf("Draw %i ",i);
+		printf("%i:",i);
 		printCard(c);
 	}
 
@@ -205,7 +205,24 @@ deck *initDeck() {
 
 void printCard(card *c) {
 
-	printf("Rank %i, Suit %c\n",c->rank,c->suit);
+	// Format rank for easier viewing
+	switch (c->rank) {
+		case A_LOW:
+			printf("A");
+			break;
+		case J:
+			printf("J");
+			break;
+		case Q:
+			printf("Q");
+			break;
+		case K:
+			printf("K");
+			break;
+		default:
+			printf("%i",c->rank);
+	}
+	printf("%c\n",c->suit);
 	
 }
 
