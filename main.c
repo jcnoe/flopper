@@ -49,6 +49,8 @@ void printTable(table *);
 int randNumInRange(int,int);
 deck *initDeck();
 void printCard(card *);
+void printSeatCards(seat *);
+void printSeatBalance(seat *);
 void printDeck(deck *);
 card *drawCard(deck *);
 void freeDeck(deck *);
@@ -58,22 +60,38 @@ void resetTable(table *);
 
 int main(int argc,char **argv) {
 	
-	int i;
-	card *c;
+	int i,j;
+	seat *s;
+	table *t;
+	deck *d;
 
 	// Seed random number generator
 	srand(time(NULL));
 
-	table *t = initTable(9);
-	printTable(t);
-	//freeTable(t);
-	
-	deck *d = initDeck();
-	for (i = 0; i < DECKSIZE;i++) {
-		c = drawCard(d);
-		printf("%i:",i);
-		printCard(c);
-	}
+	t = initTable(9);
+	d = initDeck();
+
+	//for (i = 0;i < DECKSIZE;i++) {
+		s = t->button->next;
+		// Deal 1st card to every player
+		for (j = 0;j < t->seats;j++) {
+			s->cards[0] = drawCard(d);
+			s = s->next;
+		}
+		// Deal 2nd card to every player
+		s = t->button->next;
+		for (j = 0;j < t->seats;j++) {
+			s->cards[1] = drawCard(d);
+			s = s->next;
+		}
+		s = t->button->next;
+		for (j = 0;j < t->seats;j++) {
+			printf("Seat %i\n",j);
+			printSeatCards(s);
+			printf("\n\n");
+			s = s->next;
+		}
+	//}
 
 	resetDeck(d);
 	resetTable(t);
@@ -222,7 +240,7 @@ void printCard(card *c) {
 		default:
 			printf("%i",c->rank);
 	}
-	printf("%c\n",c->suit);
+	printf("%c",c->suit);
 	
 }
 
@@ -307,4 +325,16 @@ void resetTable(table *t) {
 	t->cards[1] = NULL;
 	t->cards[2] = NULL;
 
+}
+
+void printSeatCards(seat *s) {
+	printf("Cards: ");
+	printCard(s->cards[0]);
+	printf(" ");
+	printCard(s->cards[1]);
+	printf("\n");
+}
+
+void printSeatBalance(seat *s) {
+	printf("Balance: %i\n",s->balance);
 }
