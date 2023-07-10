@@ -22,6 +22,9 @@ void resetSeat(seat *);
 void resetTable(table *);
 void advanceButton(table *);
 void dealHoleCards(table *,deck *);
+void startRound(table *,deck *);
+void postBlinds(table *);
+
 
 int main(int argc,char **argv) {
 	
@@ -33,10 +36,12 @@ int main(int argc,char **argv) {
 	// Seed random number generator
 	srand(time(NULL));
 
+	// Initialize table and deck
 	t = initTable(9);
 	d = initDeck();
 
-	dealHoleCards(t,d);
+	// Start round
+	startRound(t,d);
 
 	resetDeck(d);
 	resetTable(t);
@@ -45,6 +50,29 @@ int main(int argc,char **argv) {
 	freeDeck(d);
 
 	return 0;
+
+}
+
+void startRound(table *t,deck *d) {
+
+	// Post blinds
+	postBlinds(t);
+
+	// Deal cards
+	dealHoleCards(t,d);
+
+	// Calculate positions
+
+	// Update turn pointer
+
+}
+
+void postBlinds(table *t) {
+
+	seat *sb,*bb;
+
+	sb = t->button->next;
+	bb = sb->next;	
 
 }
 
