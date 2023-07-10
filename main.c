@@ -25,11 +25,8 @@ void dealHoleCards(table *,deck *);
 void startRound(table *,deck *);
 void postBlinds(table *);
 
-
 int main(int argc,char **argv) {
 	
-	int i,j;
-	seat *s;
 	table *t;
 	deck *d;
 
@@ -86,6 +83,9 @@ seat *initSeat(int balance,int id) {
 	s->cards[1] = (card *)malloc(sizeof(card));
 	s->next = NULL;
 	s->active = TRUE;
+	s->allin = FALSE;
+	s->totalbet = 0;
+	s->currbet = 0;
 
 	return s;
 
@@ -104,6 +104,8 @@ table *initTable(int num_seats) {
 	t->cards[0] = (card *)malloc(sizeof(card));
 	t->cards[1] = (card *)malloc(sizeof(card));
 	t->cards[2] = (card *)malloc(sizeof(card));
+	t->pot = 0;
+	t->minraise = t->bb;
 
 	// Create first seat
 	t->button = initSeat(balance,0);
@@ -228,8 +230,11 @@ void resetDeck(deck *d) {
 void resetSeat(seat *s) {
 
 	s->active = TRUE;
+	s->allin = FALSE;
 	s->cards[0] = NULL;
 	s->cards[1] = NULL;
+	s->totalbet = 0;
+	s->currbet = 0;
 
 }
 
@@ -248,6 +253,8 @@ void resetTable(table *t) {
 	t->cards[0] = NULL;
 	t->cards[1] = NULL;
 	t->cards[2] = NULL;
+	t->pot = 0;
+	t->minraise = t->bb;
 
 }
 
@@ -279,5 +286,4 @@ void dealHoleCards(table *t,deck *d) {
 	}
 
 }
-
 

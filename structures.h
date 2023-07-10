@@ -24,8 +24,12 @@ typedef struct deck{
 typedef struct seat{
 	int id;
 	int balance;
+	int currbet;
+	int totalbet;
 	card *cards[2];
+	// Should these two flags be a smaller typer than int?
 	int active;
+	int allin;
 	struct seat *next;
 } seat;
 
@@ -34,6 +38,8 @@ typedef struct table{
 	card *cards[3];
 	int bb;
 	seat *button;
+	int minraise;
+	int pot;
 } table;
 
 #endif
