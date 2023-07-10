@@ -40,6 +40,7 @@ typedef struct seat{
 
 typedef struct table{
 	int seats;
+	int aseats;
 	card *cards[5];
 	int bb;
 	seat *button;

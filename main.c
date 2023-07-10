@@ -161,6 +161,7 @@ table *initTable(int num_seats) {
 	t->cards[4] = NULL;
 	t->pot = 0;
 	t->action = NULL;
+	t->aseats = num_seats;
 	t->minraise = t->bb;
 
 	// Create first seat
@@ -327,6 +328,7 @@ void resetTable(table *t) {
 	t->cards[4] = NULL;
 	t->pot = 0;
 	t->minraise = t->bb;
+	t->aseats = t->seats;
 
 }
 
@@ -400,6 +402,7 @@ void calculatePos(table *t) {
 
 void bettingRound(table *t,int street) {
 
+	
 
 }
 
