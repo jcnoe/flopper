@@ -21,6 +21,7 @@ void resetDeck(deck *);
 void resetSeat(seat *);
 void resetTable(table *);
 void advanceButton(table *);
+void dealHoleCards(table *,deck *);
 
 int main(int argc,char **argv) {
 	
@@ -35,33 +36,7 @@ int main(int argc,char **argv) {
 	t = initTable(9);
 	d = initDeck();
 
-	//for (i = 0;i < DECKSIZE;i++) {
-		s = t->button->next;
-		// Deal 1st card to every player
-		for (j = 0;j < t->seats;j++) {
-			s->cards[0] = drawCard(d);
-			s = s->next;
-		}
-		// Deal 2nd card to every player
-		s = t->button->next;
-		for (j = 0;j < t->seats;j++) {
-			s->cards[1] = drawCard(d);
-			s = s->next;
-		}
-		s = t->button->next;
-		for (j = 0;j < t->seats;j++) {
-			printf("Seat %i\n",j);
-			printSeatCards(s);
-			printf("\n\n");
-			s = s->next;
-		}
-	//}
-
-	printButton(t);
-	advanceButton(t);
-	printButton(t);
-	advanceButton(t);
-	printButton(t);
+	dealHoleCards(t,d);
 
 	resetDeck(d);
 	resetTable(t);
@@ -256,4 +231,25 @@ void advanceButton(table *t) {
 	t->button = s;
 
 }
+
+void dealHoleCards(table *t,deck *d) {
+
+	seat *s;
+	int i;
+
+	s = t->button->next;
+	// Deal 1st card to every player
+	for (i = 0;i < t->seats;i++) {
+		s->cards[0] = drawCard(d);
+		s = s->next;
+	}
+	// Deal 2nd card to every player
+	s = t->button->next;
+	for (i = 0;i < t->seats;i++) {
+		s->cards[1] = drawCard(d);
+		s = s->next;
+	}
+
+}
+
 
