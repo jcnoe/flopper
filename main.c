@@ -25,6 +25,8 @@ void dealHoleCards(table *,deck *);
 void dealTableCards(table *,deck *,int);
 void startRound(table *,deck *);
 void postBlinds(table *);
+void calculatePos(table *);
+void advanceAction(table *);
 
 int main(int argc,char **argv) {
 	
@@ -60,9 +62,11 @@ void startRound(table *t,deck *d) {
 	dealHoleCards(t,d);
 
 	// Calculate positions
+	calculatePos(t);
 
-	// Update turn pointer
-
+	// Set action pointer to UTG
+	// TODO look at this for sizes <9
+	t->action = t->button->next->next->next;
 
 }
 
@@ -149,6 +153,7 @@ table *initTable(int num_seats) {
 	t->cards[3] = NULL;
 	t->cards[4] = NULL;
 	t->pot = 0;
+	t->action = NULL;
 	t->minraise = t->bb;
 
 	// Create first seat
@@ -328,6 +333,16 @@ void advanceButton(table *t) {
 
 }
 
+void advanceAction(table *t) {
+
+	seat *s;
+	
+	// TODO add logic to skip over those who have already folded
+	s = t->action->next;
+	t->action = s;
+
+}
+
 void dealHoleCards(table *t,deck *d) {
 
 	seat *s;
@@ -362,4 +377,16 @@ void dealTableCards(table *t,deck *d,int street) {
 		t->cards[4] = drawCard(d);
 	}
 	
+}
+
+void calculatePos(table *t) {
+
+	int i;
+	seat *s = t->button->next;
+
+	for (i = 0;i < t->seats;i++) {
+		s->pos = i;
+		s = s->next;
+	}
+
 }

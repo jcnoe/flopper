@@ -26,6 +26,7 @@ typedef struct deck{
 // Structure definitions
 typedef struct seat{
 	int id;
+	int pos;
 	int balance;
 	int currbet;
 	int totalbet;
@@ -41,6 +42,7 @@ typedef struct table{
 	card *cards[5];
 	int bb;
 	seat *button;
+	seat *action;
 	int minraise;
 	int pot;
 } table;
