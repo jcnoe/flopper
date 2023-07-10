@@ -39,7 +39,7 @@ int main(int argc,char **argv) {
 
 	// Start round
 	startRound(t,d);
-
+	
 	resetDeck(d);
 	resetTable(t);
 	

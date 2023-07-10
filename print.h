@@ -10,5 +10,6 @@ void printSeatCards(seat *);
 void printSeatBalance(seat *);
 void printDeck(deck *);
 void printButton(table *);
+void printPot(table *);
 
 #endif

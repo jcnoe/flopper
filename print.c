@@ -66,3 +66,6 @@ void printTable(table *t) {
 
 }
 
+void printPot(table *t) {
+	printf("Pot: %i\n",t->pot);
+}
