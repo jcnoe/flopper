@@ -137,6 +137,8 @@ table *initTable(int num_seats) {
 	t->cards[0] = (card *)malloc(sizeof(card));
 	t->cards[1] = (card *)malloc(sizeof(card));
 	t->cards[2] = (card *)malloc(sizeof(card));
+	t->cards[3] = (card *)malloc(sizeof(card));
+	t->cards[4] = (card *)malloc(sizeof(card));
 	t->pot = 0;
 	t->minraise = t->bb;
 
@@ -177,7 +179,9 @@ void freeTable(table *t) {
 	free(t->cards[0]);
 	free(t->cards[1]);
 	free(t->cards[2]);
-	
+	free(t->cards[3]);
+	free(t->cards[4]);
+
 	// Free table
 	free(t);
 
@@ -297,6 +301,8 @@ void resetTable(table *t) {
 	t->cards[0] = NULL;
 	t->cards[1] = NULL;
 	t->cards[2] = NULL;
+	t->cards[3] = NULL;
+	t->cards[4] = NULL;
 	t->pot = 0;
 	t->minraise = t->bb;
 

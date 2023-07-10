@@ -9,6 +9,9 @@
 #define DECKSIZE 52
 #define TRUE 1
 #define FALSE 0
+#define FLOP 0
+#define TURN 1
+#define RIVER 2
 
 typedef struct card{
 	unsigned char rank;
@@ -35,7 +38,7 @@ typedef struct seat{
 
 typedef struct table{
 	int seats;
-	card *cards[3];
+	card *cards[5];
 	int bb;
 	seat *button;
 	int minraise;
