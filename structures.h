@@ -9,9 +9,10 @@
 #define DECKSIZE 52
 #define TRUE 1
 #define FALSE 0
-#define FLOP 0
-#define TURN 1
-#define RIVER 2
+#define PFLOP 0
+#define FLOP 1
+#define TURN 2
+#define RIVER 3
 
 typedef struct card{
 	unsigned char rank;

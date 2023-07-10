@@ -27,6 +27,8 @@ void startRound(table *,deck *);
 void postBlinds(table *);
 void calculatePos(table *);
 void advanceAction(table *);
+void bettingRound(table *,int);
+void calculateWinner(table *);
 
 int main(int argc,char **argv) {
 	
@@ -42,6 +44,11 @@ int main(int argc,char **argv) {
 
 	// Start round
 	startRound(t,d);
+	bettingRound(t,PFLOP);
+	bettingRound(t,FLOP);
+	bettingRound(t,TURN);
+	bettingRound(t,RIVER);
+	calculateWinner(t);
 
 	resetDeck(d);
 	resetTable(t);
@@ -388,5 +395,15 @@ void calculatePos(table *t) {
 		s->pos = i;
 		s = s->next;
 	}
+
+}
+
+void bettingRound(table *t,int street) {
+
+
+}
+
+void calculateWinner(table *t) {
+
 
 }
