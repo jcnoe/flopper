@@ -71,6 +71,39 @@ void postBlinds(table *t) {
 	sb = t->button->next;
 	bb = sb->next;	
 
+	// Check SB balance
+	if (sb->balance > t->bb/2) {
+		// Large enough balance to not go all in
+		sb->currbet = t->bb/2;
+		sb->totalbet = t->bb/2;
+		sb->balance -= t->bb/2;
+		t->pot += t->bb/2;
+	}
+	else {
+		// Must go all-in to cover SB
+		sb->allin = TRUE;
+		sb->currbet = sb->balance;
+		sb->totalbet = sb->balance;
+		sb->balance -= sb->balance;
+		t->pot += sb->balance;
+	}
+
+	// Check BB balance
+	if (bb->balance > t->bb) {
+		bb->currbet = t->bb;
+		bb->totalbet = t->bb;
+		bb->balance -= t->bb;
+		t->pot += t->bb;
+	}
+	else {
+		// Must go all-in to cover BB
+		bb->allin = TRUE;
+		bb->currbet = bb->balance;
+		bb->totalbet = bb->balance;
+		bb->balance -= bb->balance;
+		t->pot += bb->balance;
+	}
+
 }
 
 seat *initSeat(int balance,int id) {
