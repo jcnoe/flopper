@@ -22,6 +22,7 @@ void resetSeat(seat *);
 void resetTable(table *);
 void advanceButton(table *);
 void dealHoleCards(table *,deck *);
+void dealTableCards(table *,deck *,int);
 void startRound(table *,deck *);
 void postBlinds(table *);
 
@@ -39,7 +40,7 @@ int main(int argc,char **argv) {
 
 	// Start round
 	startRound(t,d);
-	
+
 	resetDeck(d);
 	resetTable(t);
 	
@@ -61,6 +62,7 @@ void startRound(table *t,deck *d) {
 	// Calculate positions
 
 	// Update turn pointer
+
 
 }
 
@@ -119,6 +121,8 @@ seat *initSeat(int balance,int id) {
 	s->allin = FALSE;
 	s->totalbet = 0;
 	s->currbet = 0;
+	s->cards[0] = NULL;
+	s->cards[1] = NULL;
 
 	return s;
 
@@ -139,6 +143,11 @@ table *initTable(int num_seats) {
 	t->cards[2] = (card *)malloc(sizeof(card));
 	t->cards[3] = (card *)malloc(sizeof(card));
 	t->cards[4] = (card *)malloc(sizeof(card));
+	t->cards[0] = NULL;
+	t->cards[1] = NULL;
+	t->cards[2] = NULL;
+	t->cards[3] = NULL;
+	t->cards[4] = NULL;
 	t->pot = 0;
 	t->minraise = t->bb;
 
@@ -237,7 +246,8 @@ card *drawCard(deck *d) {
 			d->dealt[index] = TRUE;
 			return d->cards[index];
 		}
-		else { // Try another index
+		else { 
+			// Try another index
 			index = randNumInRange(0,51);
 		}
 	}
@@ -338,3 +348,18 @@ void dealHoleCards(table *t,deck *d) {
 
 }
 
+void dealTableCards(table *t,deck *d,int street) {
+	
+	if (street == FLOP) {
+		t->cards[0] = drawCard(d);
+		t->cards[1] = drawCard(d);
+		t->cards[2] = drawCard(d);
+	}
+	else if (street == TURN) {
+		t->cards[3] = drawCard(d);
+	}
+	else {
+		t->cards[4] = drawCard(d);
+	}
+	
+}

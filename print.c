@@ -4,25 +4,31 @@
 
 void printCard(card *c) {
 
-	// Format rank for easier viewing
-	switch (c->rank) {
-		case A_LOW:
-			printf("A");
-			break;
-		case J:
-			printf("J");
-			break;
-		case Q:
-			printf("Q");
-			break;
-		case K:
-			printf("K");
-			break;
-		default:
-			printf("%i",c->rank);
+	if (!c) {
+		// Card pointer is null, therefore it has not been dealt, print a placeholder
+		printf("0x");
 	}
-	printf("%c",c->suit);
-	
+	else {
+		// Card pointer isn't null, print the rank and suit
+		// Format rank for easier viewing
+		switch (c->rank) {
+			case A_LOW:
+				printf("A");
+				break;
+			case J:
+				printf("J");
+				break;
+			case Q:
+				printf("Q");
+				break;
+			case K:
+				printf("K");
+				break;
+			default:
+				printf("%i",c->rank);
+		}
+		printf("%c",c->suit);
+	}
 }
 
 void printDeck(deck *d) {
@@ -68,4 +74,40 @@ void printTable(table *t) {
 
 void printPot(table *t) {
 	printf("Pot: %i\n",t->pot);
+}
+
+void printFlop(table *t) {
+	printf("Flop: ");
+	printCard(t->cards[0]);
+	printf(" ");
+	printCard(t->cards[1]);
+	printf(" ");
+	printCard(t->cards[2]);
+	printf("\n");
+}
+
+void printTurn(table *t) {
+	printf("Turn: ");
+	printCard(t->cards[3]);
+	printf("\n");
+}
+
+void printRiver(table *t) {
+	printf("River: ");
+	printCard(t->cards[4]);
+	printf("\n");
+}
+
+void printTableCards(table *t) {
+	printf("Table Cards: ");
+	printCard(t->cards[0]);
+	printf(" ");
+	printCard(t->cards[1]);
+	printf(" ");
+	printCard(t->cards[2]);
+	printf(" ");
+	printCard(t->cards[3]);
+	printf(" ");
+	printCard(t->cards[4]);
+	printf("\n");
 }
