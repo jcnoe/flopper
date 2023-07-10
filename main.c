@@ -140,16 +140,19 @@ void freeTable(table *t) {
 		free(temp);
 	}
 
-	// Free table struct
+	// Free table card structs
 	free(t->cards[0]);
 	free(t->cards[1]);
 	free(t->cards[2]);
+	
+	// Free table
 	free(t);
 
 }
 
 int randNumInRange(int min,int max) {
 
+	// Return random number between min and max
 	return (rand() % (max + 1 - min) + min);
 
 }
@@ -157,16 +160,15 @@ int randNumInRange(int min,int max) {
 deck *initDeck() {
 
 	deck *d = (deck *)malloc(sizeof(deck));
-	//d->cards = (card *)malloc(sizeof(card) * DECKSIZE);
 	int i,j,index;
 	char suits[4] = {'c','d','h','s'};
 
-	// Instead of this, use double pointers? 
-	// That way pointers can be sent to seats and table instead of whatever this is
+	// Allocate space for all 52 cards
 	for (i = 0;i < DECKSIZE;i++) {
 		d->cards[i] = (card *)malloc(sizeof(card));
 	}
 
+	// For each suit, allocate Ace thru King cards
 	index = 0;
 	for (i = 0;i < 4;i++) {
 		for (j = 1;j < 14;j++) {
@@ -177,7 +179,6 @@ deck *initDeck() {
 		}
 	}
 
-	//printDeck(d);
 	return d;
 
 }
@@ -188,14 +189,18 @@ card *drawCard(deck *d) {
 
 	dealing = TRUE;
 
+	// Select a random number
 	index = randNumInRange(0,51);
+
+	// While finding a valid card
 	while (dealing) { 
+		// If the card hasn't been dealt yet
 		if (d->dealt[index] == FALSE) {
 			dealing = FALSE;
 			d->dealt[index] = TRUE;
 			return d->cards[index];
 		}
-		else {
+		else { // Try another index
 			index = randNumInRange(0,51);
 		}
 	}
@@ -209,10 +214,12 @@ void freeDeck(deck *d) {
 
 	int i;
 	
+	// Free all 52 cards
 	for (i = 0;i < DECKSIZE;i++) {
 		free(d->cards[i]);
 	}
 
+	// Free deck struct
 	free(d);
 
 }
@@ -221,6 +228,7 @@ void resetDeck(deck *d) {
 
 	int i;
 
+	// Set the dealt flag of all 52 cards to FALSE
 	for (i = 0;i < DECKSIZE;i++) {
 		d->dealt[i] = FALSE;
 	}
@@ -229,6 +237,7 @@ void resetDeck(deck *d) {
 
 void resetSeat(seat *s) {
 
+	// Return all seat attributes to initial config (except balance)
 	s->active = TRUE;
 	s->allin = FALSE;
 	s->cards[0] = NULL;
@@ -244,12 +253,14 @@ void resetTable(table *t) {
 	seat *temp;
 	seat *button = t->button;
 
+	// Reset all seats
 	for (i = 0;i < t->seats;i++) {
 		temp = button;
 		button = button->next;
 		resetSeat(temp);
 	}
 
+	// Reset all table attributes to initial config
 	t->cards[0] = NULL;
 	t->cards[1] = NULL;
 	t->cards[2] = NULL;
@@ -262,6 +273,7 @@ void advanceButton(table *t) {
 
 	seat *s;
 	
+	// Move the button to the left one position
 	s = t->button->next;
 	t->button = s;
 
@@ -271,9 +283,9 @@ void dealHoleCards(table *t,deck *d) {
 
 	seat *s;
 	int i;
-
-	s = t->button->next;
+	
 	// Deal 1st card to every player
+	s = t->button->next;
 	for (i = 0;i < t->seats;i++) {
 		s->cards[0] = drawCard(d);
 		s = s->next;

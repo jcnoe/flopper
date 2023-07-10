@@ -30,9 +30,7 @@ void printDeck(deck *d) {
 	int i;
 
 	for (i = 0;i < DECKSIZE;i++) {
-		//printf("Index: %i ");
 		printCard(d->cards[i]);
-		//printf("Index %i: Rank %i, Suit %c, drawn %i\n",i,d->cards[i]->rank,d->cards[i]->suit,d->dealt[i]);
 	}
 
 }
