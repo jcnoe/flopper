@@ -15,6 +15,13 @@
 #define FLOP 1
 #define TURN 2
 #define RIVER 3
+#define CLUBS 0
+#define DIAMONDS 1
+#define HEARTS 2
+#define SPADES 3
+#define NUMTABLECARDS 5
+#define NUMHOLECARDS 2
+#define CARDSPERSUIT 13
 
 typedef struct card{
 	unsigned char rank;

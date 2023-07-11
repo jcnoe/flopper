@@ -174,6 +174,40 @@ void calculateWinner(table *t) {
 
 }
 
+int possibleFlush(table *t) {
+
+	int i;
+	int suitcounts[4];
+
+	suitcounts[CLUBS] = 0;
+	suitcounts[DIAMONDS] = 0;
+	suitcounts[HEARTS] = 0;
+	suitcounts[SPADES] = 0;
+
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		if (t->cards[i]->suit == 'c') {
+			suitcounts[CLUBS] += 1;
+		}
+		else if (t->cards[i]->suit == 'd') {
+			suitcounts[DIAMONDS] += 1;
+		}
+		else if (t->cards[i]->suit == 'h') {
+			suitcounts[HEARTS] += 1;
+		}
+		else {
+			suitcounts[SPADES] += 1;
+		}
+	}
+	
+	if ((suitcounts[CLUBS] >= 3) || (suitcounts[DIAMONDS] >= 3) || (suitcounts[HEARTS] >= 3) || (suitcounts[SPADES] >= 3)) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+
+}
+
 int checkStraightFlush(table *t,seat *s) {
 
 
@@ -195,6 +229,7 @@ int checkStraight(table *t,seat *s) {
 
 int checkTrips(table *t,seat *s) {
 
+	
 
 }
 
@@ -205,10 +240,19 @@ int checkTwoPair(table *t,seat *s) {
 
 int checkPair(table *t,seat *s) {
 
+	int i;
+	int rankcounts[13];
+
+	for (i = 0;i < CARDSPERSUIT;i++) {
+
+	}
 
 }
 
 int checkHigh(table *t,seat *s) {
 
+	int i;
+
+	
 
 }
