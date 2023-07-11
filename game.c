@@ -170,5 +170,45 @@ void bettingRound(table *t,int street) {
 
 void calculateWinner(table *t) {
 
+	
+
+}
+
+int checkStraightFlush(table *t,seat *s) {
+
+
+}
+
+int checkQuads(table *t,seat *s) {
+
+}
+
+int checkFlush(table *t,seat *s) {
+
+
+}
+
+int checkStraight(table *t,seat *s) {
+
+
+}
+
+int checkTrips(table *t,seat *s) {
+
+
+}
+
+int checkTwoPair(table *t,seat *s) {
+
+
+}
+
+int checkPair(table *t,seat *s) {
+
+
+}
+
+int checkHigh(table *t,seat *s) {
+
 
 }
