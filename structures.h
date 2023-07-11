@@ -49,4 +49,13 @@ typedef struct table{
 	int pot;
 } table;
 
+deck *initDeck();
+seat *initSeat(int,int);
+table *initTable(int);
+void freeTable(table *);
+void freeDeck(deck *);
+void resetDeck(deck *);
+void resetSeat(seat *);
+void resetTable(table *);
+
 #endif

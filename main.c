@@ -7,28 +7,7 @@
 #include <time.h>
 #include "structures.h"
 #include "print.h"
-
-// Prototypes
-seat *initSeat(int,int);
-table *initTable(int);
-void freeTable(table *);
-int randNumInRange(int,int);
-deck *initDeck();
-void printCard(card *);
-card *drawCard(deck *);
-void freeDeck(deck *);
-void resetDeck(deck *);
-void resetSeat(seat *);
-void resetTable(table *);
-void advanceButton(table *);
-void dealHoleCards(table *,deck *);
-void dealTableCards(table *,deck *,int);
-void startRound(table *,deck *);
-void postBlinds(table *);
-void calculatePos(table *);
-void advanceAction(table *);
-void bettingRound(table *,int);
-void calculateWinner(table *);
+#include "game.h"
 
 int main(int argc,char **argv) {
 	
