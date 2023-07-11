@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
+#include <stdlib.h>
+
 #define A_HIGH 14
 #define A_LOW 1
 #define K 13
