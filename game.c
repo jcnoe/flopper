@@ -236,21 +236,16 @@ int possibleStraight(table *t) {
 		}
 	}
 
-	for (i = 0;i < CARDSPERSUIT+1;i++) {
-		printf("%i ",rankcounts[i]);
-	}
-	printf("\n");
-
+	// This is CARDSPERSUIT-2 to account for the window
 	for (i = 0;i < CARDSPERSUIT-2;i++) {
 		count = 0;
 		// Check window
-		printf("Checking %i-%i\n",i,i+4);
 		for (j = i;j < i+4;j++) {
 			if (rankcounts[j] >= 1) {
 				count += 1;
 			}
 		}
-		printf("%i Count = %i\n",i,count);
+		// If 3 or more cards in a 5 card, then a straight is possible
 		if (count >= 3) {
 			return TRUE;	
 		}
