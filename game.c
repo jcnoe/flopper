@@ -171,6 +171,7 @@ void bettingRound(table *t,int street) {
 
 void calculateWinner(table *t) {
 
+	
 
 }
 
@@ -179,11 +180,13 @@ int possibleFlush(table *t) {
 	int i;
 	int suitcounts[4];
 
+	// 0 out all suits
 	suitcounts[CLUBS] = 0;
 	suitcounts[DIAMONDS] = 0;
 	suitcounts[HEARTS] = 0;
 	suitcounts[SPADES] = 0;
 
+	// Count the number of appearances of each suit
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (t->cards[i]->suit == 'c') {
 			suitcounts[CLUBS] += 1;
@@ -199,6 +202,7 @@ int possibleFlush(table *t) {
 		}
 	}
 	
+	// If a suit appears 3 times or more, then a flush is possible
 	if ((suitcounts[CLUBS] >= 3) || (suitcounts[DIAMONDS] >= 3) || (suitcounts[HEARTS] >= 3) || (suitcounts[SPADES] >= 3)) {
 		return TRUE;
 	}
@@ -208,8 +212,36 @@ int possibleFlush(table *t) {
 
 }
 
+// A straight is only possible if there are atleast 3 cards within a 5 card window
 int possibleStraight(table *t) {
 
+	int i,j,count;
+	int rankcounts[CARDSPERSUIT];
+
+	// 0 out all ranks
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		rankcounts[i] = 0;
+	}
+
+	// Count the number of appearances of each rank
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		rankcounts[t->cards[i]->rank-1] += 1;
+	}
+
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		count = 0;
+		// Check window
+		for (j = i;j < i+5;j++) {
+			if (rankcounts[j] >= 1) {
+				count += 1;
+			}
+		}
+		if (count >= 3) {
+			return TRUE;	
+		}
+	}
+
+	return FALSE;
 
 }
 
@@ -225,6 +257,7 @@ int possibleQuadsAndFullHouse(table *t) {
 	}
 	max = 0;
 
+	// Count the number of appearances of each rank
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		rankcounts[t->cards[i]->rank-1] += 1;
 		if (rankcounts[t->cards[i]->rank-1] > max) {
@@ -232,6 +265,7 @@ int possibleQuadsAndFullHouse(table *t) {
 		}
 	}
 
+	// If a card appears twice or more, Quads and FH are possible
 	if (max >= 2) {
 		return TRUE;
 	}
