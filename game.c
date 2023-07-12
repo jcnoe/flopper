@@ -201,7 +201,7 @@ int possibleFlush(table *t) {
 			suitcounts[SPADES] += 1;
 		}
 	}
-	
+
 	// If a suit appears 3 times or more, then a flush is possible
 	if ((suitcounts[CLUBS] >= 3) || (suitcounts[DIAMONDS] >= 3) || (suitcounts[HEARTS] >= 3) || (suitcounts[SPADES] >= 3)) {
 		return TRUE;
@@ -216,26 +216,41 @@ int possibleFlush(table *t) {
 int possibleStraight(table *t) {
 
 	int i,j,count;
-	int rankcounts[CARDSPERSUIT];
+	// CARDSPERSUIT+1 because of A_LOW and A_HIGH
+	int rankcounts[CARDSPERSUIT+1];
 
 	// 0 out all ranks
-	for (i = 0;i < CARDSPERSUIT;i++) {
+	for (i = 0;i < CARDSPERSUIT+1;i++) {
 		rankcounts[i] = 0;
 	}
 
 	// Count the number of appearances of each rank
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		rankcounts[t->cards[i]->rank-1] += 1;
+		// Make sure that ace is counted as high and low for straight
+		if (t->cards[i]->rank == A_LOW) {
+			rankcounts[A_LOW-1] += 1;
+			rankcounts[A_HIGH-1] += 1;
+		}
+		else {
+			rankcounts[t->cards[i]->rank-1] += 1;
+		}
 	}
 
-	for (i = 0;i < CARDSPERSUIT;i++) {
+	for (i = 0;i < CARDSPERSUIT+1;i++) {
+		printf("%i ",rankcounts[i]);
+	}
+	printf("\n");
+
+	for (i = 0;i < CARDSPERSUIT-2;i++) {
 		count = 0;
 		// Check window
-		for (j = i;j < i+5;j++) {
+		printf("Checking %i-%i\n",i,i+4);
+		for (j = i;j < i+4;j++) {
 			if (rankcounts[j] >= 1) {
 				count += 1;
 			}
 		}
+		printf("%i Count = %i\n",i,count);
 		if (count >= 3) {
 			return TRUE;	
 		}
@@ -262,21 +277,17 @@ int possibleQuadsAndFullHouse(table *t) {
 		rankcounts[t->cards[i]->rank-1] += 1;
 		if (rankcounts[t->cards[i]->rank-1] > max) {
 			max = rankcounts[t->cards[i]->rank-1];
+			if (max >= 2) {
+				return TRUE;
+			}
 		}
 	}
 
-	// If a card appears twice or more, Quads and FH are possible
-	if (max >= 2) {
-		return TRUE;
-	}
-	else {
-		return FALSE;
-	}
+	return FALSE;
 
 }
 
 int checkStraightFlush(table *t,seat *s) {
-
 
 }
 
