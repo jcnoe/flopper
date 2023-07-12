@@ -38,7 +38,7 @@ int main(int argc,char **argv) {
 	t->cards[3] = drawCard(d);
 	t->cards[4] = drawCard(d);
 	t->cards[0]->rank = 2;
-	t->cards[0]->suit = 'd';
+	t->cards[0]->suit = 'c';
 	t->cards[1]->rank = Q;
 	t->cards[1]->suit = 'h';
 	t->cards[2]->rank = 2;

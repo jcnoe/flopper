@@ -171,7 +171,34 @@ void bettingRound(table *t,int street) {
 
 void calculateWinner(table *t) {
 
-	
+	int flush,qfh,straight,i;
+	seat *s;	
+
+	flush = possibleFlush(t);
+	straight = possibleStraight(t);
+	qfh = possibleQuadsAndFullHouse(t);
+
+	for (i = 0;i < t->aseats;i++) {
+		// find next active seat logic
+		if (flush && straight) {
+			checkStraightFlush(t,s);
+		}
+		if (qfh) {
+			checkQuads(t,s);
+			checkFullHouse(t,s);
+		}
+		if (flush) {
+			checkFlush(t,s);
+		}
+		if (straight) {
+			checkStraight(t,s);
+		}
+		// TODO add check for previous matched hand ^ and v
+		checkTrips(t,s);
+		checkTwoPair(t,s);
+		checkPair(t,s);
+		checkHigh(t,s);
+	}	
 
 }
 
@@ -302,6 +329,7 @@ int checkFlush(table *t,seat *s) {
 
 int checkStraight(table *t,seat *s) {
 
+	
 
 }
 
