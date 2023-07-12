@@ -22,6 +22,15 @@
 #define NUMTABLECARDS 5
 #define NUMHOLECARDS 2
 #define CARDSPERSUIT 13
+#define HIGH 0
+#define ONEPAIR 1
+#define TWOPAIR 2
+#define TRIPS 3
+#define STRAIGHT 4
+#define FLUSH 5
+#define FULLHOUSE 6
+#define QUADS 7
+#define STRAIGHTFLUSH 8
 
 typedef struct card{
 	unsigned char rank;
