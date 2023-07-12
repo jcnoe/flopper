@@ -104,6 +104,7 @@ void advanceButton(table *t) {
 
 }
 
+// Should only be called when there is valid action behind
 void advanceAction(table *t) {
 
 	seat *s;
@@ -170,7 +171,6 @@ void bettingRound(table *t,int street) {
 
 void calculateWinner(table *t) {
 
-	
 
 }
 
@@ -208,12 +208,50 @@ int possibleFlush(table *t) {
 
 }
 
+int possibleStraight(table *t) {
+
+
+}
+
+// Quads and Full House are only possible if the table cards have 2 of the same rank
+int possibleQuadsAndFullHouse(table *t) {
+
+	int i,max;
+	int rankcounts[CARDSPERSUIT];
+
+	// 0 out all ranks
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		rankcounts[i] = 0;
+	}
+	max = 0;
+
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		rankcounts[t->cards[i]->rank-1] += 1;
+		if (rankcounts[t->cards[i]->rank-1] > max) {
+			max = rankcounts[t->cards[i]->rank-1];
+		}
+	}
+
+	if (max >= 2) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+
+}
+
 int checkStraightFlush(table *t,seat *s) {
 
 
 }
 
 int checkQuads(table *t,seat *s) {
+
+}
+
+int checkFullHouse(table *t,seat *s) {
+
 
 }
 
@@ -253,6 +291,6 @@ int checkHigh(table *t,seat *s) {
 
 	int i;
 
-	
+		
 
 }

@@ -16,13 +16,17 @@ void bettingRound(table *,int);
 void calculateWinner(table *);
 int randNumInRange(int,int);
 card *drawCard(deck *);
-int checkStraightFlush(table *t,seat *s);
-int checkQuads(table *t,seat *s);
-int checkFlush(table *t,seat *s);
-int checkStraight(table *t,seat *s);
-int checkTrips(table *t,seat *s);
-int checkTwoPair(table *t,seat *s);
-int checkPair(table *t,seat *s);
-int checkHigh(table *t,seat *s);
+int possibleFlush(table *);
+int possibleStraight(table *);
+int possibleQuadsAndFullHouse(table *);
+int checkStraightFlush(table *,seat *);
+int checkQuads(table *,seat *);
+int checkFullHouse(table *,seat *);
+int checkFlush(table *,seat *);
+int checkStraight(table *,seat *);
+int checkTrips(table *,seat *);
+int checkTwoPair(table *,seat *);
+int checkPair(table *,seat *);
+int checkHigh(table *,seat *);
 
 #endif
