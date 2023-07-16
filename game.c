@@ -353,7 +353,13 @@ int checkQuads(table *t,seat *s) {
 		rankcounts[t->cards[i]->rank-1] += 1;
 		// If this is true, then quads were dealt to the table
 		if (rankcounts[t->cards[i]->rank-1] >= 4) {
-			return t->cards[i]->rank;
+			s->typeofhand = QUADS;
+			s->hand[0]->rank = t->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			s->hand[2]->rank = s->hand[0]->rank;
+			s->hand[3]->rank = s->hand[0]->rank;
+			// TODO determine 1 kicker
+			return TRUE;
 		}
 	}
 	// Add the number of each rank from a seats hole cards
@@ -361,7 +367,13 @@ int checkQuads(table *t,seat *s) {
 		rankcounts[s->cards[i]->rank-1] += 1;
 		// If a rank has 4 cards, quads have been made
 		if (rankcounts[s->cards[i]->rank-1] >= 4) {
-			return s->cards[i]->rank;
+			s->typeofhand = QUADS;
+			s->hand[0]->rank = s->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			s->hand[2]->rank = s->hand[0]->rank;
+			s->hand[3]->rank = s->hand[0]->rank;
+			// TODO determine 1 kicker
+			return TRUE;
 		}
 	}
 
@@ -467,7 +479,12 @@ int checkTrips(table *t,seat *s) {
 		rankcounts[t->cards[i]->rank-1] += 1;
 		// If this is true, then trips were dealt to the table
 		if (rankcounts[t->cards[i]->rank-1] >= 3) {
-			return t->cards[i]->rank;
+			s->typeofhand = TRIPS;
+			s->hand[0]->rank = t->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			s->hand[2]->rank = s->hand[0]->rank;
+			// TODO determine 2 kickers
+			return TRUE;
 		}
 	}
 	// Add the number of each rank from a seats hole cards
@@ -475,7 +492,12 @@ int checkTrips(table *t,seat *s) {
 		rankcounts[s->cards[i]->rank-1] += 1;
 		// If a rank has 3 cards, trips have been made
 		if (rankcounts[s->cards[i]->rank-1] >= 3) {
-			return s->cards[i]->rank;
+			s->typeofhand = TRIPS;
+			s->hand[0]->rank = s->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			s->hand[2]->rank = s->hand[0]->rank;
+			// TODO determine 2 kickers
+			return TRUE;
 		}
 	}
 
@@ -503,7 +525,11 @@ int checkPair(table *t,seat *s) {
 		rankcounts[t->cards[i]->rank-1] += 1;
 		// If this is true, then the pair was dealt to the table
 		if (rankcounts[t->cards[i]->rank-1] >= 2) {
-			return t->cards[i]->rank;
+			s->typeofhand = ONEPAIR;
+			s->hand[0]->rank = t->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			// TODO determine 3 kickers
+			return TRUE;
 		}
 	}
 	// Add the number of each rank from a seats hole cards
@@ -511,7 +537,11 @@ int checkPair(table *t,seat *s) {
 		rankcounts[s->cards[i]->rank-1] += 1;
 		// If a rank has 2 cards, a pair has been made
 		if (rankcounts[s->cards[i]->rank-1] >= 2) {
-			return s->cards[i]->rank;
+			s->typeofhand = ONEPAIR;
+			s->hand[0]->rank = s->cards[i]->rank;
+			s->hand[1]->rank = s->hand[0]->rank;
+			// TODO determine 3 kickers
+			return TRUE;
 		}
 	}
 
@@ -558,6 +588,7 @@ int checkHigh(table *t,seat *s) {
 	for (i = 0;i < 5;i++) {
 		s->hand[i]->rank = ranks[i];
 	}
+	s->typeofhand = HIGH;
 
 	return TRUE;
 
