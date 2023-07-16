@@ -20,11 +20,11 @@ seat *initSeat(int balance,int id) {
 	s->currbet = 0;
 	s->cards[0] = NULL;
 	s->cards[1] = NULL;
-	s->hand[0] = NULL;
+	/*s->hand[0] = NULL;
 	s->hand[1] = NULL;
 	s->hand[2] = NULL;
 	s->hand[3] = NULL;
-	s->hand[4] = NULL;
+	s->hand[4] = NULL;*/
 	s->typeofhand = UNKNOWN;
 
 	return s;
@@ -84,17 +84,21 @@ void freeTable(table *t) {
 	for (i = 1;i <= t->seats;i++) {
 		temp = button;
 		button = button->next;
+		// TODO clean up this code
 		free(temp->cards[0]);
 		free(temp->cards[1]);
+		free(temp->hand[0]);
+		free(temp->hand[1]);
+		free(temp->hand[2]);
+		free(temp->hand[3]);
+		free(temp->hand[4]);
 		free(temp);
 	}
 
 	// Free table card structs
-	free(t->cards[0]);
-	free(t->cards[1]);
-	free(t->cards[2]);
-	free(t->cards[3]);
-	free(t->cards[4]);
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		free(t->cards[i]);
+	}
 
 	// Free table
 	free(t);

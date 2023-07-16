@@ -59,6 +59,7 @@ int main(int argc,char **argv) {
 	s->cards[1]->suit = 'h';	
 
 	printf("%i\n",checkStraight(t,s));
+	printHand(s);
 
 	resetDeck(d);
 	resetTable(t);

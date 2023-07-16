@@ -382,7 +382,7 @@ int checkFlush(table *t,seat *s) {
 
 int checkStraight(table *t,seat *s) {
 
-	int i,j,count;
+	int i,j,k,count;
 	// CARDSPERSUIT+1 because of A_LOW and A_HIGH
 	int rankcounts[CARDSPERSUIT+1];
 
@@ -427,7 +427,12 @@ int checkStraight(table *t,seat *s) {
 		// See if a straight is present
 		if (count == 5) {
 			// I+1 since I is the index, index+1 would be the actual rank
-			return i+1;
+			s->typeofhand = STRAIGHT;
+			for (k = 0;k < 5;k++) {
+				// keeping track of the suit does not matter, we already know that there is not a flush
+				s->hand[k]->rank = i+1-k;
+			}
+			return TRUE;
 		}
 	}
 
