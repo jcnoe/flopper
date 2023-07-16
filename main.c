@@ -41,11 +41,11 @@ int main(int argc,char **argv) {
 	t->cards[0]->suit = 'c';
 	t->cards[1]->rank = 7;
 	t->cards[1]->suit = 'h';
-	t->cards[2]->rank = 6;
+	t->cards[2]->rank = 2;
 	t->cards[2]->suit = 'c';
-	t->cards[3]->rank = 9;
+	t->cards[3]->rank = 3;
 	t->cards[3]->suit = 'd';
-	t->cards[4]->rank = 10;
+	t->cards[4]->rank = 4;
 	t->cards[4]->suit = 'c';
 
 	printTableCards(t);
@@ -53,7 +53,7 @@ int main(int argc,char **argv) {
 	seat *s = t->button;
 	s->cards[0] = drawCard(d);
 	s->cards[1] = drawCard(d);
-	s->cards[0]->rank = J;
+	s->cards[0]->rank = 1;
 	s->cards[0]->suit = 'c';
 	s->cards[1]->rank = 5;
 	s->cards[1]->suit = 'h';	

@@ -401,7 +401,8 @@ int checkStraight(table *t,seat *s) {
 		}
 		// See if a straight is present
 		if (count == 5) {
-			return i;
+			// I+1 since I is the index, index+1 would be the actual rank
+			return i+1;
 		}
 	}
 
