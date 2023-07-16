@@ -99,15 +99,21 @@ void printRiver(table *t) {
 }
 
 void printTableCards(table *t) {
-	printf("Table Cards: ");
-	printCard(t->cards[0]);
-	printf(" ");
-	printCard(t->cards[1]);
-	printf(" ");
-	printCard(t->cards[2]);
-	printf(" ");
-	printCard(t->cards[3]);
-	printf(" ");
-	printCard(t->cards[4]);
+	int i;
+	printf("Table cards: ");
+	for (i = 0;i < 5;i++) {
+		printCard(t->cards[i]);
+		printf(" ");
+	}
+	printf("\n");
+}
+
+void printHand(seat *s) {
+	int i;
+	printf("Seat %i's hand: ",s->id);
+	for (i = 0;i < 5;i++) {
+		printCard(s->hand[i]);
+		printf(" ");
+	}
 	printf("\n");
 }
