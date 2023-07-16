@@ -315,6 +315,34 @@ int checkStraightFlush(table *t,seat *s) {
 
 int checkQuads(table *t,seat *s) {
 
+	int i;
+	int rankcounts[CARDSPERSUIT];
+
+	// 0 out all ranks
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		rankcounts[i] = 0;
+	}
+
+	// Count the number of appearances of each rank on the board
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		rankcounts[t->cards[i]->rank-1] += 1;
+		// If this is true, then quads were dealt to the table
+		if (rankcounts[t->cards[i]->rank-1] >= 4) {
+			return t->cards[i]->rank;
+		}
+	}
+	// Add the number of each rank from a seats hole cards
+	for (i = 0;i < NUMHOLECARDS;i++) {
+		rankcounts[s->cards[i]->rank-1] += 1;
+		// If a rank has 4 cards, quads have been made
+		if (rankcounts[s->cards[i]->rank-1] >= 4) {
+			return s->cards[i]->rank;
+		}
+	}
+
+	// This will be interpreted as no quads
+	return FALSE;
+
 }
 
 int checkFullHouse(table *t,seat *s) {
@@ -359,6 +387,6 @@ int checkHigh(table *t,seat *s) {
 
 	int i;
 
-		
+			
 
 }
