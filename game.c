@@ -385,10 +385,15 @@ int checkStraight(table *t,seat *s) {
 	int i,j,k,count;
 	// CARDSPERSUIT+1 because of A_LOW and A_HIGH
 	int rankcounts[CARDSPERSUIT+1];
+	int suitcounts[4][CARDSPERSUIT+1];
 
 	// 0 out all ranks
 	for (i = 0;i < CARDSPERSUIT+1;i++) {
 		rankcounts[i] = 0;
+		suitcounts[0][i] = 0;
+		suitcounts[1][i] = 0;
+		suitcounts[2][i] = 0;
+		suitcounts[3][i] = 0;
 	}
 
 	// Count the number of appearances of each rank
@@ -397,9 +402,12 @@ int checkStraight(table *t,seat *s) {
 		if (t->cards[i]->rank == A_LOW) {
 			rankcounts[A_LOW-1] += 1;
 			rankcounts[A_HIGH-1] += 1;
+			suitcounts[determineSuit(t->cards[i])][A_LOW-1] += 1;
+			suitcounts[determineSuit(t->cards[i])][A_HIGH-1] += 1;
 		}
 		else {
 			rankcounts[t->cards[i]->rank-1] += 1;
+			suitcounts[determineSuit(t->cards[i])][t->cards[i]->rank-1] += 1;
 		}
 	}
 
@@ -408,9 +416,12 @@ int checkStraight(table *t,seat *s) {
 		if (s->cards[i]->rank == A_LOW) {
 			rankcounts[A_LOW-1] += 1;
 			rankcounts[A_HIGH-1] += 1;
+			suitcounts[determineSuit(s->cards[i])][A_LOW-1] += 1;
+			suitcounts[determineSuit(s->cards[i])][A_HIGH-1] += 1;
 		}
 		else {
 			rankcounts[s->cards[i]->rank-1] += 1;
+			suitcounts[determineSuit(s->cards[i])][s->cards[i]->rank-1] += 1;	
 		}
 	}
 
@@ -515,4 +526,19 @@ int checkHigh(table *t,seat *s) {
 
 	
 
+}
+
+int determineSuit(card *c) {
+	if (c->rank == 'c') {
+		return CLUBS;
+	}
+	else if (c->rank == 'd') {
+		return DIAMONDS;
+	}
+	else if (c->rank == 'h') {
+		return HEARTS;
+	}
+	else {
+		return SPADES;
+	}
 }

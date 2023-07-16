@@ -29,5 +29,6 @@ int checkTrips(table *,seat *);
 int checkTwoPair(table *,seat *);
 int checkPair(table *,seat *);
 int checkHigh(table *,seat *);
+int determineSuit(card *);
 
 #endif
