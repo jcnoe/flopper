@@ -357,7 +357,56 @@ int checkFlush(table *t,seat *s) {
 
 int checkStraight(table *t,seat *s) {
 
-	
+	int i,j,count;
+	// CARDSPERSUIT+1 because of A_LOW and A_HIGH
+	int rankcounts[CARDSPERSUIT+1];
+
+	// 0 out all ranks
+	for (i = 0;i < CARDSPERSUIT+1;i++) {
+		rankcounts[i] = 0;
+	}
+
+	// Count the number of appearances of each rank
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		// Make sure that ace is counted as high and low for straight
+		if (t->cards[i]->rank == A_LOW) {
+			rankcounts[A_LOW-1] += 1;
+			rankcounts[A_HIGH-1] += 1;
+		}
+		else {
+			rankcounts[t->cards[i]->rank-1] += 1;
+		}
+	}
+
+	// Add the number of each rank from a seats hole cards
+	for (i = 0;i < NUMHOLECARDS;i++) {
+		if (s->cards[i]->rank == A_LOW) {
+			rankcounts[A_LOW-1] += 1;
+			rankcounts[A_HIGH-1] += 1;
+		}
+		else {
+			rankcounts[s->cards[i]->rank-1] += 1;
+		}
+	}
+
+	// This is i > 3 to account for the window of size 5
+	// Go from high card to low to prevent counting a higher flush as a lower one
+	for (i = CARDSPERSUIT+1;i > 3;i--) {
+		count = 0;
+		// Check window
+		for (j = i;j > i-5;j--) {
+			if (rankcounts[j] >= 1) {
+				count += 1;
+			}
+		}
+		// See if a straight is present
+		if (count == 5) {
+			return i;
+		}
+	}
+
+	// No straight
+	return FALSE;
 
 }
 
