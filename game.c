@@ -522,9 +522,44 @@ int checkPair(table *t,seat *s) {
 
 int checkHigh(table *t,seat *s) {
 
-	int i;
+	int i,j;
+	int ranks[NUMTABLECARDS+NUMHOLECARDS];
 
+	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+		ranks[i] = 0;
+	}
 	
+	for (i = 0; i < NUMTABLECARDS;i++) {
+		if (t->cards[i]->rank == A_LOW) {
+			ranks[i] = A_HIGH;
+		}
+		else {
+			ranks[i] = t->cards[i]->rank;
+		}
+	}
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		if (s->cards[i]->rank == A_LOW) {
+			ranks[i+5] = A_HIGH;	
+		}
+		else {
+			ranks[i+5] = s->cards[i]->rank;
+		}
+	}
+
+	// Bubble sort
+	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS-1;i++) {
+		for (j = 0;j < NUMTABLECARDS+NUMHOLECARDS-i-1;j++) {
+			if (ranks[j] < ranks[j+1]) {
+				swap(&ranks[j],&ranks[j+1]);
+			}
+		}
+	}
+
+	for (i = 0;i < 5;i++) {
+		s->hand[i]->rank = ranks[i];
+	}
+
+	return TRUE;
 
 }
 
@@ -541,4 +576,10 @@ int determineSuit(card *c) {
 	else {
 		return SPADES;
 	}
+}
+
+void swap(int *x,int *y) {
+	int temp = *x;
+	*x = *y;
+	*y = temp;
 }

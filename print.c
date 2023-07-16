@@ -15,6 +15,9 @@ void printCard(card *c) {
 			case A_LOW:
 				printf("A");
 				break;
+			case A_HIGH:
+				printf("A");
+				break;
 			case J:
 				printf("J");
 				break;
