@@ -508,6 +508,6 @@ int checkHigh(table *t,seat *s) {
 
 	int i;
 
-			
+	
 
 }

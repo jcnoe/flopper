@@ -22,6 +22,7 @@
 #define NUMTABLECARDS 5
 #define NUMHOLECARDS 2
 #define CARDSPERSUIT 13
+#define UNKNOWN -1
 #define HIGH 0
 #define ONEPAIR 1
 #define TWOPAIR 2
@@ -50,6 +51,8 @@ typedef struct seat{
 	int currbet;
 	int totalbet;
 	card *cards[2];
+	card *hand[5];
+	int typeofhand;
 	// Should these two flags be a smaller typer than int?
 	int active;
 	int allin;

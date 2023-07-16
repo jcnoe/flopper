@@ -8,6 +8,11 @@ seat *initSeat(int balance,int id) {
 	s->id = id;
 	s->cards[0] = (card *)malloc(sizeof(card));
 	s->cards[1] = (card *)malloc(sizeof(card));
+	s->hand[0] = (card *)malloc(sizeof(card));
+	s->hand[1] = (card *)malloc(sizeof(card));
+	s->hand[2] = (card *)malloc(sizeof(card));
+	s->hand[3] = (card *)malloc(sizeof(card));
+	s->hand[4] = (card *)malloc(sizeof(card));
 	s->next = NULL;
 	s->active = TRUE;
 	s->allin = FALSE;
@@ -15,6 +20,12 @@ seat *initSeat(int balance,int id) {
 	s->currbet = 0;
 	s->cards[0] = NULL;
 	s->cards[1] = NULL;
+	s->hand[0] = NULL;
+	s->hand[1] = NULL;
+	s->hand[2] = NULL;
+	s->hand[3] = NULL;
+	s->hand[4] = NULL;
+	s->typeofhand = UNKNOWN;
 
 	return s;
 
@@ -148,8 +159,14 @@ void resetSeat(seat *s) {
 	s->allin = FALSE;
 	s->cards[0] = NULL;
 	s->cards[1] = NULL;
+	s->hand[0] = NULL;
+	s->hand[1] = NULL;
+	s->hand[2] = NULL;
+	s->hand[3] = NULL;
+	s->hand[4] = NULL;
 	s->totalbet = 0;
 	s->currbet = 0;
+	s->typeofhand = UNKNOWN;
 
 }
 
