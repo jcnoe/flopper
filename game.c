@@ -408,7 +408,7 @@ int checkFullHouse(table *t,seat *s) {
 	}
 	if (top) {
 		for (i = 0;i < CARDSPERSUIT;i++) {
-			if (rankcounts[i] == 2) {
+			if (rankcounts[i] >= 2 && i != top-1) {
 				bottom = i+1;
 			}
 		}
