@@ -16,6 +16,7 @@ void bettingRound(table *,int);
 void calculateWinner(table *);
 int randNumInRange(int,int);
 card *drawCard(deck *);
+void burnCard(deck *);
 int possibleFlush(table *);
 int possibleStraight(table *);
 int possibleQuadsAndFullHouse(table *);

@@ -94,6 +94,31 @@ card *drawCard(deck *d) {
 
 }
 
+// Same logic as drawCard, except do not return anything
+void burnCard(deck *d) {
+
+	int index,dealing;
+
+	dealing = TRUE;
+
+	// Select a random number
+	index = randNumInRange(0,51);
+
+	// While finding a valid card
+	while (dealing) { 
+		// If the card hasn't been dealt yet
+		if (d->dealt[index] == FALSE) {
+			dealing = FALSE;
+			d->dealt[index] = TRUE;
+		}
+		else { 
+			// Try another index
+			index = randNumInRange(0,51);
+		}
+	}
+
+}
+
 void advanceButton(table *t) {
 
 	seat *s;
