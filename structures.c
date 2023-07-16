@@ -163,11 +163,11 @@ void resetSeat(seat *s) {
 	s->allin = FALSE;
 	s->cards[0] = NULL;
 	s->cards[1] = NULL;
-	s->hand[0] = NULL;
+/*	s->hand[0] = NULL;
 	s->hand[1] = NULL;
 	s->hand[2] = NULL;
 	s->hand[3] = NULL;
-	s->hand[4] = NULL;
+	s->hand[4] = NULL; */
 	s->totalbet = 0;
 	s->currbet = 0;
 	s->typeofhand = UNKNOWN;

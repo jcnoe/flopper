@@ -37,13 +37,13 @@ int main(int argc,char **argv) {
 	t->cards[2] = drawCard(d);
 	t->cards[3] = drawCard(d);
 	t->cards[4] = drawCard(d);
-	t->cards[0]->rank = 4;
+	t->cards[0]->rank = Q;
 	t->cards[0]->suit = 'c';
-	t->cards[1]->rank = 2;
+	t->cards[1]->rank = Q;
 	t->cards[1]->suit = 'h';
-	t->cards[2]->rank = 6;
+	t->cards[2]->rank = J;
 	t->cards[2]->suit = 'c';
-	t->cards[3]->rank = 7;
+	t->cards[3]->rank = J;
 	t->cards[3]->suit = 'd';
 	t->cards[4]->rank = J;
 	t->cards[4]->suit = 'c';
@@ -58,7 +58,7 @@ int main(int argc,char **argv) {
 	s->cards[1]->rank = 1;
 	s->cards[1]->suit = 'h';	
 
-	checkHigh(t,s);
+	checkFullHouse(t,s);
 	printHand(s);
 
 	resetDeck(d);

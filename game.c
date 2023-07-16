@@ -384,6 +384,62 @@ int checkQuads(table *t,seat *s) {
 
 int checkFullHouse(table *t,seat *s) {
 
+	int i,top,bottom;
+	int rankcounts[CARDSPERSUIT];
+
+	top = 0;
+	bottom = 0;
+	// 0 out all ranks
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		rankcounts[i] = 0;
+	}
+
+	// Count the number of appearances of each rank on the board
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		rankcounts[t->cards[i]->rank-1] += 1;
+	}
+	for (i = 0;i < NUMHOLECARDS;i++) {
+		rankcounts[s->cards[i]->rank-1] += 1;
+	}
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		if (rankcounts[i] == 3) {
+			top = i+1;
+		}
+	}
+	if (top) {
+		for (i = 0;i < CARDSPERSUIT;i++) {
+			if (rankcounts[i] == 2) {
+				bottom = i+1;
+			}
+		}
+	}
+	
+	if (top && bottom) {
+		if (top == A_LOW) {
+			s->hand[0]->rank = A_HIGH;
+			s->hand[1]->rank = A_HIGH;
+			s->hand[2]->rank = A_HIGH;
+		}
+		else {
+			s->hand[0]->rank = top;
+			s->hand[1]->rank = top;
+			s->hand[2]->rank = top;
+		}
+		if (bottom == A_LOW) {
+			s->hand[3]->rank = A_HIGH;
+			s->hand[4]->rank = A_HIGH;
+		}
+		else {
+			s->hand[3]->rank = bottom;
+			s->hand[4]->rank = bottom;
+		}
+		s->typeofhand = FULLHOUSE;
+		return TRUE;
+	}
+	else {
+		printf("NO FH\n");
+		return FALSE;
+	}
 
 }
 
