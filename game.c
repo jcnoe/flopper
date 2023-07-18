@@ -566,7 +566,64 @@ int checkTrips(table *t,seat *s) {
 
 int checkTwoPair(table *t,seat *s) {
 
+	int i,toppair,bottompair,pair1,pair2,count;
+	int ranks[CARDSPERSUIT];
+	
+	toppair = 0;
+	bottompair = 0;
+	pair1 = 0;
+	pair2 = 0;
+	count = 0;
 
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		ranks[i] = 0;
+	}
+
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
+			if (ranks[s->cards[i]->rank-1] == 2 && pair1 == 0) {
+				pair1 = s->cards[i]->rank;
+			}
+			else if (ranks[s->cards[i]->rank-1] == 2 && pair2 == 0) {
+				pair2 = s->cards[i]->rank;
+			}
+		}
+		ranks[t->cards[i]->rank-1] += 1;
+		if (ranks[t->cards[i]->rank-1] == 2 && pair1 == 0) {
+			pair1 = t->cards[i]->rank;
+		}
+		else if (ranks[t->cards[i]->rank-1] == 2 && pair2 == 0) {
+			pair2 = t->cards[i]->rank;
+		}
+	}
+
+	if (pair1 > pair2) {
+		toppair = pair1;
+		bottompair = pair2;
+	}
+	else {
+		toppair = pair2;
+		bottompair = pair1;
+	}
+
+	if (toppair && bottompair) {
+		s->hand[0]->rank = toppair;
+		s->hand[1]->rank = toppair;
+		s->hand[2]->rank = bottompair;
+		s->hand[3]->rank = bottompair;
+		for (i = CARDSPERSUIT-1;i >= 0;i--) {
+			if (i+1 != toppair && i+1 != bottompair && count != 1) {
+				s->hand[4]->rank = i+1;
+				count += 1;
+			}
+		}
+		s->typeofhand = TWOPAIR;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 
@@ -585,12 +642,12 @@ int checkPair(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
-			if (ranks[s->cards[i]->rank-1] == 2){
+			if (ranks[s->cards[i]->rank-1] == 2) {
 				pair = s->cards[i]->rank;
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
-		if (ranks[t->cards[i]->rank-1] == 2){
+		if (ranks[t->cards[i]->rank-1] == 2) {
 			pair = t->cards[i]->rank;
 		}
 	}
