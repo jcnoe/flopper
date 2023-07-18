@@ -437,13 +437,15 @@ int checkFullHouse(table *t,seat *s) {
 		return TRUE;
 	}
 	else {
-		printf("NO FH\n");
 		return FALSE;
 	}
 
 }
 
 int checkFlush(table *t,seat *s) {
+
+
+
 
 
 }
@@ -564,6 +566,8 @@ int checkTrips(table *t,seat *s) {
 
 int checkTwoPair(table *t,seat *s) {
 
+
+
 }
 
 int checkPair(table *t,seat *s) {
@@ -608,8 +612,8 @@ int checkPair(table *t,seat *s) {
 
 int checkHigh(table *t,seat *s) {
 
-	int i,j;
-	int ranks[NUMTABLECARDS+NUMHOLECARDS];
+	int i;
+	int *ranks = (int *)malloc(sizeof(int)*(NUMTABLECARDS+NUMHOLECARDS));;
 
 	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
 		ranks[i] = 0;
@@ -633,18 +637,14 @@ int checkHigh(table *t,seat *s) {
 	}
 
 	// Bubble sort
-	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS-1;i++) {
-		for (j = 0;j < NUMTABLECARDS+NUMHOLECARDS-i-1;j++) {
-			if (ranks[j] < ranks[j+1]) {
-				swap(&ranks[j],&ranks[j+1]);
-			}
-		}
-	}
+	bubblesort(ranks);
 
 	for (i = 0;i < 5;i++) {
 		s->hand[i]->rank = ranks[i];
 	}
 	s->typeofhand = HIGH;
+
+	free(ranks);
 
 	return TRUE;
 
@@ -669,4 +669,18 @@ void swap(int *x,int *y) {
 	int temp = *x;
 	*x = *y;
 	*y = temp;
+}
+
+void bubblesort(int *array) {
+	
+	int i,j;
+
+	// Bubble sort
+	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS-1;i++) {
+		for (j = 0;j < NUMTABLECARDS+NUMHOLECARDS-i-1;j++) {
+			if (array[j] < array[j+1]) {
+				swap(&array[j],&array[j+1]);
+			}
+		}
+	}
 }
