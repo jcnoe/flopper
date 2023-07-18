@@ -572,41 +572,44 @@ int checkTwoPair(table *t,seat *s) {
 
 int checkPair(table *t,seat *s) {
 
-	int i;
-	int rankcounts[CARDSPERSUIT];
+	int i,pair,count;
+	int ranks[CARDSPERSUIT];
+	
+	pair = 0;
+	count = 0;
 
-	// 0 out all ranks
 	for (i = 0;i < CARDSPERSUIT;i++) {
-		rankcounts[i] = 0;
+		ranks[i] = 0;
 	}
 
-	// Count the number of appearances of each rank on the board
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		rankcounts[t->cards[i]->rank-1] += 1;
-		// If this is true, then the pair was dealt to the table
-		if (rankcounts[t->cards[i]->rank-1] >= 2) {
-			s->typeofhand = ONEPAIR;
-			s->hand[0]->rank = t->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			// TODO determine 3 kickers
-			return TRUE;
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
+			if (ranks[s->cards[i]->rank-1] == 2){
+				pair = s->cards[i]->rank;
+			}
 		}
-	}
-	// Add the number of each rank from a seats hole cards
-	for (i = 0;i < NUMHOLECARDS;i++) {
-		rankcounts[s->cards[i]->rank-1] += 1;
-		// If a rank has 2 cards, a pair has been made
-		if (rankcounts[s->cards[i]->rank-1] >= 2) {
-			s->typeofhand = ONEPAIR;
-			s->hand[0]->rank = s->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			// TODO determine 3 kickers
-			return TRUE;
+		ranks[t->cards[i]->rank-1] += 1;
+		if (ranks[t->cards[i]->rank-1] == 2){
+			pair = t->cards[i]->rank;
 		}
 	}
 
-	// This will be interpreted as no trips
-	return FALSE;
+	if (pair) {
+		s->hand[0]->rank = pair;
+		s->hand[1]->rank = pair;
+		for (i = CARDSPERSUIT-1;i >= 0;i--) {
+			if (i+1 != pair && count != 3) {
+				s->hand[count+2]->rank = i+1;
+				count += 1;
+			}
+		}
+		s->typeofhand = ONEPAIR;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 
