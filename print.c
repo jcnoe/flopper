@@ -122,7 +122,7 @@ void printHand(seat *s) {
 			printf("Quads: ");
 			break;
 		case FULLHOUSE:
-			printf("Quads: ");
+			printf("Full house: ");
 			break;
 		case FLUSH:
 			printf("Flush: ");

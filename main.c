@@ -36,8 +36,10 @@ int main(int argc,char **argv) {
 	int straight = possibleStraight(t);
 	for (i = 0;i < t->seats;i++) {
 		determineHand(t,s,qfh,flush,straight);
-		printHoleCards(s);
-		printHand(s);
+		if (s->typeofhand == FULLHOUSE) {
+			printHoleCards(s);
+			printHand(s);
+		}
 		s = s->next;
 	}
 
