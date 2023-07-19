@@ -199,10 +199,10 @@ void determineWinner(table *t) {
 	int flush,qfh,straight,i;
 	seat *s;
 
+	qfh = possibleQuadsAndFullHouse(t);
 	flush = possibleFlush(t);
 	straight = possibleStraight(t);
-	qfh = possibleQuadsAndFullHouse(t);
-
+	
 	for (i = 0;i < t->aseats;i++) {
 		// find next active seat logic
 		if (flush && straight) {
@@ -227,13 +227,10 @@ void determineWinner(table *t) {
 
 }
 
-void determineHand(table *t,seat *s) {
+void determineHand(table *t,seat *s,int qfh,int flush,int straight) {
 
-	int flush,qfh,straight,found;
+	int found;
 
-	qfh = possibleQuadsAndFullHouse(t);
-	flush = possibleFlush(t);
-	straight = possibleStraight(t);
 	found = FALSE;
 
 	if (flush && straight && !found) {

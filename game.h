@@ -14,7 +14,7 @@ void calculatePos(table *);
 void advanceAction(table *);
 void bettingRound(table *,int);
 void determineWinner(table *);
-void determineHand(table *,seat *);
+void determineHand(table *,seat *,int,int,int);
 int randNumInRange(int,int);
 card *drawCard(deck *);
 void burnCard(deck *);
