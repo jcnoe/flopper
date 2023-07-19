@@ -206,14 +206,14 @@ void calculateWinner(table *t) {
 	for (i = 0;i < t->aseats;i++) {
 		// find next active seat logic
 		if (flush && straight) {
-			checkStraightFlush(t,s);
+			checkStraightFlush(t,s,flush);
 		}
 		if (qfh) {
 			checkQuads(t,s);
 			checkFullHouse(t,s);
 		}
 		if (flush) {
-			checkFlush(t,s);
+			checkFlush(t,s,flush);
 		}
 		if (straight) {
 			checkStraight(t,s);
@@ -343,7 +343,7 @@ int possibleQuadsAndFullHouse(table *t) {
 
 }
 
-int checkStraightFlush(table *t,seat *s) {
+int checkStraightFlush(table *t,seat *s,int suit) {
 
 }
 
@@ -451,11 +451,53 @@ int checkFullHouse(table *t,seat *s) {
 
 }
 
-int checkFlush(table *t,seat *s) {
+int checkFlush(table *t,seat *s,int suit) {
 
+	int i,count,flush;
+	int ranks[CARDSPERSUIT];
+	char suits[4] = {'c','d','h','s'};
 
+	count = 0;
+	flush = FALSE;
 
+	for (i = 0;i < CARDSPERSUIT;i++) {
+		ranks[i] = 0;
+	}
 
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		if (i < NUMHOLECARDS) {
+			if (s->cards[i]->suit == suits[suit]) {
+				ranks[s->cards[i]->rank-1] += 1;
+				count += 1;
+			}
+		}
+		if (t->cards[i]->suit == suits[suit]) {
+			ranks[t->cards[i]->rank-1] += 1;
+			count += 1;
+			if (count >= 5) {
+				flush = TRUE;
+			}
+		}
+	}
+	
+	count = 0;
+	if (flush) {
+		if (ranks[0] == A_LOW) {
+			s->hand[count]->rank = A_HIGH;
+			count += 1;
+		}
+		for (i = CARDSPERSUIT-1;i > 0;i--) {
+			if (ranks[i] == 1 && count != 5) {
+				s->hand[count]->rank = i+1;
+				count += 1;
+			}
+		}
+		s->typeofhand = FLUSH;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 
