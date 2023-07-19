@@ -194,7 +194,7 @@ void bettingRound(table *t,int street) {
 
 }
 
-void calculateWinner(table *t) {
+void determineWinner(table *t) {
 
 	int flush,qfh,straight,i;
 	seat *s;
