@@ -660,7 +660,11 @@ int checkPair(table *t,seat *s) {
 	if (pair) {
 		s->hand[0]->rank = pair;
 		s->hand[1]->rank = pair;
-		for (i = CARDSPERSUIT-1;i >= 0;i--) {
+		if (ranks[0] == 1) {
+			s->hand[count+2]->rank = A_HIGH;
+			count += 1;
+		}
+		for (i = CARDSPERSUIT-1;i > 0;i--) {
 			if (i+1 != pair && count != 3) {
 				s->hand[count+2]->rank = i+1;
 				count += 1;

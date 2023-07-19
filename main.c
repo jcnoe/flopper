@@ -37,15 +37,15 @@ int main(int argc,char **argv) {
 	t->cards[2] = drawCard(d);
 	t->cards[3] = drawCard(d);
 	t->cards[4] = drawCard(d);
-	t->cards[0]->rank = 8;
+	t->cards[0]->rank = 1;
 	t->cards[0]->suit = 'c';
-	t->cards[1]->rank = 8;
+	t->cards[1]->rank = 5;
 	t->cards[1]->suit = 'h';
-	t->cards[2]->rank = 7;
+	t->cards[2]->rank = 6;
 	t->cards[2]->suit = 'c';
-	t->cards[3]->rank = K;
+	t->cards[3]->rank = 7;
 	t->cards[3]->suit = 'd';
-	t->cards[4]->rank = 2;
+	t->cards[4]->rank = 10;
 	t->cards[4]->suit = 'c';
 
 	printTableCards(t);
@@ -56,9 +56,9 @@ int main(int argc,char **argv) {
 	s->cards[0]->rank = 4;
 	s->cards[0]->suit = 'c';
 	s->cards[1]->rank = 4;
-	s->cards[1]->suit = 'h';	
+	s->cards[1]->suit = 'h';
 
-	checkTwoPair(t,s);
+	checkPair(t,s);
 	printHand(s);
 
 	resetDeck(d);
