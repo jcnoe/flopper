@@ -345,49 +345,121 @@ int possibleQuadsAndFullHouse(table *t) {
 
 int checkStraightFlush(table *t,seat *s,int suit) {
 
+	int i,j,count,flush,straight;
+	int ranks[CARDSPERSUIT+1];
+	char suits[4] = {'c','d','h','s'};
+
+	count = 0;
+	flush = FALSE;
+	straight = FALSE;
+
+	for (i = 0;i < CARDSPERSUIT+1;i++) {
+		ranks[i] = 0;
+	}
+
+	for (i = 0;i < NUMTABLECARDS;i++) {
+		if (i < NUMHOLECARDS) {
+			if (s->cards[i]->suit == suits[suit]) {
+				ranks[s->cards[i]->rank-1] += 1;
+				count += 1;
+			}
+		}
+		if (t->cards[i]->suit == suits[suit]) {
+			ranks[t->cards[i]->rank-1] += 1;
+			count += 1;
+			if (count >= 5) {
+				flush = TRUE;
+			}
+		}
+	}
+	
+	// Make sure ace high and low are accounted for
+	if (ranks[0] == 1) {
+		ranks[CARDSPERSUIT] = 1;
+	}
+
+	if (flush) {
+		for (i = CARDSPERSUIT+1;i > 3;i--) {
+			count = 0;
+			// Check window
+			for (j = i;j > i-5;j--) {
+				if (ranks[j] >= 1) {
+					count += 1;
+				}
+			}
+			if (count == 5 && straight == 0) {
+				straight = i+1;
+				//for (k = 0;k < 5;k++) {
+					//s->hand[k]->rank = i+1-k;
+					//straight = TRUE;
+				//}
+			}
+		}	
+
+		if (straight) {
+			for (i = 0;i < 5;i++) {
+				s->hand[i]->rank = straight-i;
+			}
+			s->typeofhand = STRAIGHTFLUSH;
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+	}
+	else {
+		return FALSE;
+	}
+
+
 }
 
 int checkQuads(table *t,seat *s) {
 
-	int i;
-	int rankcounts[CARDSPERSUIT];
+	int i,quads,count;
+	int ranks[CARDSPERSUIT];
 
-	// 0 out all ranks
+	quads = 0;
+	count = 0;
+
 	for (i = 0;i < CARDSPERSUIT;i++) {
-		rankcounts[i] = 0;
+		ranks[i] = 0;
 	}
 
-	// Count the number of appearances of each rank on the board
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		rankcounts[t->cards[i]->rank-1] += 1;
-		// If this is true, then quads were dealt to the table
-		if (rankcounts[t->cards[i]->rank-1] >= 4) {
-			s->typeofhand = QUADS;
-			s->hand[0]->rank = t->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			s->hand[2]->rank = s->hand[0]->rank;
-			s->hand[3]->rank = s->hand[0]->rank;
-			// TODO determine 1 kicker
-			return TRUE;
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
+			if (ranks[s->cards[i]->rank-1] == 4) {
+				quads = s->cards[i]->rank;
+			}
 		}
-	}
-	// Add the number of each rank from a seats hole cards
-	for (i = 0;i < NUMHOLECARDS;i++) {
-		rankcounts[s->cards[i]->rank-1] += 1;
-		// If a rank has 4 cards, quads have been made
-		if (rankcounts[s->cards[i]->rank-1] >= 4) {
-			s->typeofhand = QUADS;
-			s->hand[0]->rank = s->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			s->hand[2]->rank = s->hand[0]->rank;
-			s->hand[3]->rank = s->hand[0]->rank;
-			// TODO determine 1 kicker
-			return TRUE;
+		ranks[t->cards[i]->rank-1] += 1;
+		if (ranks[t->cards[i]->rank-1] == 4) {
+			quads = t->cards[i]->rank;
 		}
 	}
 
-	// This will be interpreted as no quads
-	return FALSE;
+	if (quads) {
+		s->hand[0]->rank = quads;
+		s->hand[1]->rank = quads;
+		s->hand[2]->rank = quads;
+		s->hand[3]->rank = quads;
+		if (ranks[0] == A_LOW) {
+			s->hand[4]->rank = A_HIGH;
+			count += 1;
+		}
+		for (i = CARDSPERSUIT-1;i > 0;i--) {
+			if (ranks[i] == 1 && i+1 != quads && count != 1) {
+				s->hand[4]->rank = i+1;
+				count += 1;
+			}
+		}
+		s->typeofhand = QUADS;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 
