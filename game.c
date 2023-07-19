@@ -746,6 +746,11 @@ int checkTwoPair(table *t,seat *s) {
 		}
 	}
 
+	if (pair1 == A_LOW)
+		pair1 = A_HIGH;
+	if (pair2 == A_LOW)
+		pair2 = A_HIGH;
+
 	if (pair1 > pair2) {
 		toppair = pair1;
 		bottompair = pair2;
