@@ -623,7 +623,7 @@ int checkTwoPair(table *t,seat *s) {
 		}
 		else {
 			for (i = CARDSPERSUIT-1;i > 0;i--) {
-				if (i+1 != toppair && i+1 != bottompair && count != 1) {
+				if (ranks[i] == 1 && i+1 != toppair && i+1 != bottompair && count != 1) {
 					s->hand[4]->rank = i+1;
 					count += 1;
 				}
@@ -671,7 +671,7 @@ int checkPair(table *t,seat *s) {
 			count += 1;
 		}
 		for (i = CARDSPERSUIT-1;i > 0;i--) {
-			if (i+1 != pair && count != 3) {
+			if (ranks[i] == 1 && i+1 != pair && count != 3) {
 				s->hand[count+2]->rank = i+1;
 				count += 1;
 			}
