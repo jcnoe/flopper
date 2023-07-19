@@ -6,7 +6,7 @@
 
 void printTable(table *);
 void printCard(card *);
-void printSeatCards(seat *);
+void printHoleCards(seat *);
 void printSeatBalance(seat *);
 void printDeck(deck *);
 void printButton(table *);

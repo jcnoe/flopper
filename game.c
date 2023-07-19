@@ -202,27 +202,15 @@ void determineWinner(table *t) {
 	qfh = possibleQuadsAndFullHouse(t);
 	flush = possibleFlush(t);
 	straight = possibleStraight(t);
-	
+
+	s = t->button;
+	for (i = 0;i < t->seats;i++) {
+		determineHand(t,s,qfh,flush,straight);
+		s = s->next;
+	}
+
 	for (i = 0;i < t->aseats;i++) {
-		// find next active seat logic
-		if (flush && straight) {
-			checkStraightFlush(t,s,flush);
-		}
-		if (qfh) {
-			checkQuads(t,s);
-			checkFullHouse(t,s);
-		}
-		if (flush) {
-			checkFlush(t,s,flush);
-		}
-		if (straight) {
-			checkStraight(t,s);
-		}
-		// TODO add check for previous matched hand ^ and v
-		checkTrips(t,s);
-		checkTwoPair(t,s);
-		checkPair(t,s);
-		checkHigh(t,s);
+
 	}	
 
 }

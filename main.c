@@ -21,46 +21,25 @@ int main(int argc,char **argv) {
 	t = initTable(9);
 	d = initDeck();
 
-	// Start round
-/*	startRound(t,d);
-	bettingRound(t,PFLOP);
-	bettingRound(t,FLOP);
-	bettingRound(t,TURN);
-	bettingRound(t,RIVER);
-	calculateWinner(t);
-*/
-
-
-	// TEMP
-	t->cards[0] = drawCard(d);
-	t->cards[1] = drawCard(d);
-	t->cards[2] = drawCard(d);
-	t->cards[3] = drawCard(d);
-	t->cards[4] = drawCard(d);
-	t->cards[0]->rank = 1;
-	t->cards[0]->suit = 's';
-	t->cards[1]->rank = 6;
-	t->cards[1]->suit = 'd';
-	t->cards[2]->rank = 5;
-	t->cards[2]->suit = 'c';
-	t->cards[3]->rank = 4;
-	t->cards[3]->suit = 'c';
-	t->cards[4]->rank = 3;
-	t->cards[4]->suit = 'c';
+	// TODO temp for testing
+	dealHoleCards(t,d);
+	dealTableCards(t,d,FLOP);
+	dealTableCards(t,d,TURN);
+	dealTableCards(t,d,RIVER);
 
 	printTableCards(t);
 
+	int i;
 	seat *s = t->button;
-	s->cards[0] = drawCard(d);
-	s->cards[1] = drawCard(d);
-	s->cards[0]->rank = 2;
-	s->cards[0]->suit = 'c';
-	s->cards[1]->rank = 1;
-	s->cards[1]->suit = 'c';
-
-	//checkFlush(t,s,possibleFlush(t));
-	checkStraightFlush(t,s,possibleFlush(t));
-	printHand(s);
+	int flush = possibleFlush(t);
+	int qfh = possibleQuadsAndFullHouse(t);
+	int straight = possibleStraight(t);
+	for (i = 0;i < t->seats;i++) {
+		determineHand(t,s,qfh,flush,straight);
+		printHoleCards(s);
+		printHand(s);
+		s = s->next;
+	}
 
 	resetDeck(d);
 	resetTable(t);
