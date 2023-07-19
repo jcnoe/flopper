@@ -55,10 +55,10 @@ int main(int argc,char **argv) {
 	s->cards[1] = drawCard(d);
 	s->cards[0]->rank = 4;
 	s->cards[0]->suit = 'c';
-	s->cards[1]->rank = 4;
+	s->cards[1]->rank = K;
 	s->cards[1]->suit = 'h';
 
-	checkPair(t,s);
+	checkHigh(t,s);
 	printHand(s);
 
 	resetDeck(d);

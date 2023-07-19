@@ -612,7 +612,7 @@ int checkTwoPair(table *t,seat *s) {
 		s->hand[1]->rank = toppair;
 		s->hand[2]->rank = bottompair;
 		s->hand[3]->rank = bottompair;
-		if (ranks[0] == 1) {
+		if (ranks[0] == A_LOW) {
 			s->hand[4]->rank = A_HIGH;
 		}
 		else {
@@ -660,7 +660,7 @@ int checkPair(table *t,seat *s) {
 	if (pair) {
 		s->hand[0]->rank = pair;
 		s->hand[1]->rank = pair;
-		if (ranks[0] == 1) {
+		if (ranks[0] == A_LOW) {
 			s->hand[count+2]->rank = A_HIGH;
 			count += 1;
 		}
@@ -681,40 +681,33 @@ int checkPair(table *t,seat *s) {
 
 int checkHigh(table *t,seat *s) {
 
-	int i;
-	int *ranks = (int *)malloc(sizeof(int)*(NUMTABLECARDS+NUMHOLECARDS));;
+	int i,count;
+	int ranks[CARDSPERSUIT];
+	
+	count = 0;
 
-	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+	for (i = 0;i < CARDSPERSUIT;i++) {
 		ranks[i] = 0;
 	}
-	
-	for (i = 0; i < NUMTABLECARDS;i++) {
-		if (t->cards[i]->rank == A_LOW) {
-			ranks[i] = A_HIGH;
-		}
-		else {
-			ranks[i] = t->cards[i]->rank;
-		}
-	}
+
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		if (s->cards[i]->rank == A_LOW) {
-			ranks[i+5] = A_HIGH;	
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
 		}
-		else {
-			ranks[i+5] = s->cards[i]->rank;
-		}
+		ranks[t->cards[i]->rank-1] += 1;
 	}
 
-	// Bubble sort
-	bubblesort(ranks);
-
-	for (i = 0;i < 5;i++) {
-		s->hand[i]->rank = ranks[i];
+	if (ranks[0] == A_LOW) {
+		s->hand[count]->rank = A_HIGH;
+		count += 1;
+	}
+	for (i = CARDSPERSUIT-1;i > 0;i--) {
+		if (ranks[i] == 1 && count != 5) {
+			s->hand[count]->rank = i+1;
+			count += 1;
+		}
 	}
 	s->typeofhand = HIGH;
-
-	free(ranks);
-
 	return TRUE;
 
 }
