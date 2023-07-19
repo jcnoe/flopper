@@ -38,14 +38,14 @@ int main(int argc,char **argv) {
 	t->cards[3] = drawCard(d);
 	t->cards[4] = drawCard(d);
 	t->cards[0]->rank = 1;
-	t->cards[0]->suit = 'c';
-	t->cards[1]->rank = K;
-	t->cards[1]->suit = 'c';
-	t->cards[2]->rank = Q;
+	t->cards[0]->suit = 's';
+	t->cards[1]->rank = 6;
+	t->cards[1]->suit = 'd';
+	t->cards[2]->rank = 5;
 	t->cards[2]->suit = 'c';
-	t->cards[3]->rank = J;
+	t->cards[3]->rank = 4;
 	t->cards[3]->suit = 'c';
-	t->cards[4]->rank = 10;
+	t->cards[4]->rank = 3;
 	t->cards[4]->suit = 'c';
 
 	printTableCards(t);
@@ -53,10 +53,10 @@ int main(int argc,char **argv) {
 	seat *s = t->button;
 	s->cards[0] = drawCard(d);
 	s->cards[1] = drawCard(d);
-	s->cards[0]->rank = 1;
-	s->cards[0]->suit = 'h';
+	s->cards[0]->rank = 2;
+	s->cards[0]->suit = 'c';
 	s->cards[1]->rank = 1;
-	s->cards[1]->suit = 'd';
+	s->cards[1]->suit = 'c';
 
 	//checkFlush(t,s,possibleFlush(t));
 	checkStraightFlush(t,s,possibleFlush(t));

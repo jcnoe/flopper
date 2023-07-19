@@ -197,7 +197,7 @@ void bettingRound(table *t,int street) {
 void calculateWinner(table *t) {
 
 	int flush,qfh,straight,i;
-	seat *s;	
+	seat *s;
 
 	flush = possibleFlush(t);
 	straight = possibleStraight(t);
@@ -224,6 +224,45 @@ void calculateWinner(table *t) {
 		checkPair(t,s);
 		checkHigh(t,s);
 	}	
+
+}
+
+void determineHand(table *t,seat *s) {
+
+	int flush,qfh,straight,found;
+
+	qfh = possibleQuadsAndFullHouse(t);
+	flush = possibleFlush(t);
+	straight = possibleStraight(t);
+	found = FALSE;
+
+	if (flush && straight && !found) {
+		found = checkStraightFlush(t,s,flush);
+	}
+	if (qfh && !found) {
+		found = checkQuads(t,s);
+	}
+	if (qfh && !found) {
+		found = checkFullHouse(t,s);
+	}
+	if (flush && !found) {
+		found = checkFlush(t,s,flush);
+	}
+	if (straight && !found) {
+		found = checkStraight(t,s);
+	}
+	if (!found) {
+		found = checkTrips(t,s);
+	}
+	if (!found) {
+		found = checkTwoPair(t,s);
+	}
+	if (!found) {
+		found = checkPair(t,s);
+	}
+	if (!found) {
+		found = checkHigh(t,s);
+	}
 
 }
 
@@ -381,7 +420,6 @@ int checkStraightFlush(table *t,seat *s,int suit) {
 	if (flush) {
 		for (i = CARDSPERSUIT+1;i > 3;i--) {
 			count = 0;
-			// Check window
 			for (j = i;j > i-5;j--) {
 				if (ranks[j] >= 1) {
 					count += 1;
@@ -389,10 +427,6 @@ int checkStraightFlush(table *t,seat *s,int suit) {
 			}
 			if (count == 5 && straight == 0) {
 				straight = i+1;
-				//for (k = 0;k < 5;k++) {
-					//s->hand[k]->rank = i+1-k;
-					//straight = TRUE;
-				//}
 			}
 		}	
 
