@@ -524,43 +524,49 @@ int checkStraight(table *t,seat *s) {
 
 int checkTrips(table *t,seat *s) {
 
-	int i;
-	int rankcounts[CARDSPERSUIT];
+	int i,trips,count;
+	int ranks[CARDSPERSUIT];
+	
+	trips = 0;
+	count = 0;
 
-	// 0 out all ranks
 	for (i = 0;i < CARDSPERSUIT;i++) {
-		rankcounts[i] = 0;
+		ranks[i] = 0;
 	}
 
-	// Count the number of appearances of each rank on the board
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		rankcounts[t->cards[i]->rank-1] += 1;
-		// If this is true, then trips were dealt to the table
-		if (rankcounts[t->cards[i]->rank-1] >= 3) {
-			s->typeofhand = TRIPS;
-			s->hand[0]->rank = t->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			s->hand[2]->rank = s->hand[0]->rank;
-			// TODO determine 2 kickers
-			return TRUE;
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
+			if (ranks[s->cards[i]->rank-1] == 3) {
+				trips = s->cards[i]->rank;
+			}
 		}
-	}
-	// Add the number of each rank from a seats hole cards
-	for (i = 0;i < NUMHOLECARDS;i++) {
-		rankcounts[s->cards[i]->rank-1] += 1;
-		// If a rank has 3 cards, trips have been made
-		if (rankcounts[s->cards[i]->rank-1] >= 3) {
-			s->typeofhand = TRIPS;
-			s->hand[0]->rank = s->cards[i]->rank;
-			s->hand[1]->rank = s->hand[0]->rank;
-			s->hand[2]->rank = s->hand[0]->rank;
-			// TODO determine 2 kickers
-			return TRUE;
+		ranks[t->cards[i]->rank-1] += 1;
+		if (ranks[t->cards[i]->rank-1] == 3) {
+			trips = t->cards[i]->rank;
 		}
 	}
 
-	// This will be interpreted as no trips
-	return FALSE;
+	if (trips) {
+		s->hand[0]->rank = trips;
+		s->hand[1]->rank = trips;
+		s->hand[2]->rank = trips;
+		if (ranks[0] == A_LOW) {
+			s->hand[count+3]->rank = A_HIGH;
+			count += 1;
+		}
+		for (i = CARDSPERSUIT-1;i > 0;i--) {
+			if (ranks[i] == 1 && i+1 != trips && count != 2) {
+				s->hand[count+3]->rank = i+1;
+				count += 1;
+			}
+		}
+		s->typeofhand = TRIPS;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 

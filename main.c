@@ -39,9 +39,9 @@ int main(int argc,char **argv) {
 	t->cards[4] = drawCard(d);
 	t->cards[0]->rank = 1;
 	t->cards[0]->suit = 'c';
-	t->cards[1]->rank = 5;
+	t->cards[1]->rank = K;
 	t->cards[1]->suit = 'h';
-	t->cards[2]->rank = 6;
+	t->cards[2]->rank = J;
 	t->cards[2]->suit = 'c';
 	t->cards[3]->rank = 7;
 	t->cards[3]->suit = 'd';
@@ -53,12 +53,12 @@ int main(int argc,char **argv) {
 	seat *s = t->button;
 	s->cards[0] = drawCard(d);
 	s->cards[1] = drawCard(d);
-	s->cards[0]->rank = 4;
+	s->cards[0]->rank = 1;
 	s->cards[0]->suit = 'c';
-	s->cards[1]->rank = K;
+	s->cards[1]->rank = 1;
 	s->cards[1]->suit = 'h';
 
-	checkHigh(t,s);
+	checkTrips(t,s);
 	printHand(s);
 
 	resetDeck(d);
