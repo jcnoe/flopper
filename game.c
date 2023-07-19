@@ -460,9 +460,13 @@ int checkQuads(table *t,seat *s) {
 
 	if (quads) {
 		s->hand[0]->rank = quads;
+		s->hand[0]->suit = 'c';
 		s->hand[1]->rank = quads;
+		s->hand[1]->suit = 'd';
 		s->hand[2]->rank = quads;
+		s->hand[2]->suit = 'h';
 		s->hand[3]->rank = quads;
+		s->hand[4]->suit = 's';
 		if (ranks[0] == A_LOW) {
 			s->hand[4]->rank = A_HIGH;
 			count += 1;
@@ -594,10 +598,10 @@ int checkStraight(table *t,seat *s) {
 	// 0 out all ranks
 	for (i = 0;i < CARDSPERSUIT+1;i++) {
 		rankcounts[i] = 0;
-		suitcounts[0][i] = 0;
-		suitcounts[1][i] = 0;
-		suitcounts[2][i] = 0;
-		suitcounts[3][i] = 0;
+		suitcounts[CLUBS][i] = 0;
+		suitcounts[DIAMONDS][i] = 0;
+		suitcounts[HEARTS][i] = 0;
+		suitcounts[SPADES][i] = 0;
 	}
 
 	// Count the number of appearances of each rank
