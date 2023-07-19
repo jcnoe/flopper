@@ -45,7 +45,7 @@ void printDeck(deck *d) {
 }
 
 void printHoleCards(seat *s) {
-	printf("Cards: ");
+	printf("Seat %i's Hole Cards: ",s->id);
 	printCard(s->cards[0]);
 	printf(" ");
 	printCard(s->cards[1]);
