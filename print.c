@@ -113,7 +113,35 @@ void printTableCards(table *t) {
 
 void printHand(seat *s) {
 	int i;
-	printf("Seat %i's hand: ",s->id);
+	printf("Seat %i's ",s->id);
+	switch (s->typeofhand) {
+		case STRAIGHTFLUSH:
+			printf("Straight flush: ");
+			break;
+		case QUADS:
+			printf("Quads: ");
+			break;
+		case FULLHOUSE:
+			printf("Quads: ");
+			break;
+		case FLUSH:
+			printf("Flush: ");
+			break;
+		case STRAIGHT:
+			printf("Straight: ");
+			break;
+		case TRIPS:
+			printf("Trips: ");
+			break;
+		case TWOPAIR:
+			printf("Two pair: ");
+			break;
+		case ONEPAIR:
+			printf("One pair: ");
+			break;
+		default:
+			printf("High card: ");
+	}
 	for (i = 0;i < 5;i++) {
 		printCard(s->hand[i]);
 		printf(" ");
