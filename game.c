@@ -727,22 +727,3 @@ int determineSuit(card *c) {
 	}
 }
 
-void swap(int *x,int *y) {
-	int temp = *x;
-	*x = *y;
-	*y = temp;
-}
-
-void bubblesort(int *array) {
-	
-	int i,j;
-
-	// Bubble sort
-	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS-1;i++) {
-		for (j = 0;j < NUMTABLECARDS+NUMHOLECARDS-i-1;j++) {
-			if (array[j] < array[j+1]) {
-				swap(&array[j],&array[j+1]);
-			}
-		}
-	}
-}

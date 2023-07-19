@@ -30,7 +30,5 @@ int checkTwoPair(table *,seat *);
 int checkPair(table *,seat *);
 int checkHigh(table *,seat *);
 int determineSuit(card *);
-void swap(int *,int *);
-void bubblesort(int *);
 
 #endif
