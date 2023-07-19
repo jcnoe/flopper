@@ -418,6 +418,7 @@ int checkStraightFlush(table *t,seat *s,int suit) {
 		if (straight) {
 			for (i = 0;i < 5;i++) {
 				s->hand[i]->rank = straight-i;
+				s->hand[i]->suit = suits[suit];
 			}
 			s->typeofhand = STRAIGHTFLUSH;
 			return TRUE;
@@ -429,7 +430,6 @@ int checkStraightFlush(table *t,seat *s,int suit) {
 	else {
 		return FALSE;
 	}
-
 
 }
 
@@ -571,6 +571,9 @@ int checkFlush(table *t,seat *s,int suit) {
 				s->hand[count]->rank = i+1;
 				count += 1;
 			}
+		}
+		for (i = 0;i < 5;i++) {
+			s->hand[i]->suit = suits[suit];
 		}
 		s->typeofhand = FLUSH;
 		return TRUE;
