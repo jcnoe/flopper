@@ -255,8 +255,17 @@ int possibleFlush(table *t) {
 	}
 
 	// If a suit appears 3 times or more, then a flush is possible
-	if ((suitcounts[CLUBS] >= 3) || (suitcounts[DIAMONDS] >= 3) || (suitcounts[HEARTS] >= 3) || (suitcounts[SPADES] >= 3)) {
-		return TRUE;
+	if (suitcounts[CLUBS] >= 3) {
+		return CLUBS;
+	}
+	else if (suitcounts[DIAMONDS] >= 3) {
+		return DIAMONDS;
+	}
+	else if (suitcounts[HEARTS] >= 3) {
+		return HEARTS;
+	}
+	else if (suitcounts[SPADES] >= 3) {
+		return SPADES;
 	}
 	else {
 		return FALSE;
