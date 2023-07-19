@@ -612,10 +612,15 @@ int checkTwoPair(table *t,seat *s) {
 		s->hand[1]->rank = toppair;
 		s->hand[2]->rank = bottompair;
 		s->hand[3]->rank = bottompair;
-		for (i = CARDSPERSUIT-1;i >= 0;i--) {
-			if (i+1 != toppair && i+1 != bottompair && count != 1) {
-				s->hand[4]->rank = i+1;
-				count += 1;
+		if (ranks[0] == 1) {
+			s->hand[4]->rank = A_HIGH;
+		}
+		else {
+			for (i = CARDSPERSUIT-1;i > 0;i--) {
+				if (i+1 != toppair && i+1 != bottompair && count != 1) {
+					s->hand[4]->rank = i+1;
+					count += 1;
+				}
 			}
 		}
 		s->typeofhand = TWOPAIR;
