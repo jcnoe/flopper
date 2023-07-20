@@ -590,73 +590,50 @@ int checkFlush(table *t,seat *s,int suit) {
 
 int checkStraight(table *t,seat *s) {
 
-	int i,j,k,count;
-	// CARDSPERSUIT+1 because of A_LOW and A_HIGH
-	int rankcounts[CARDSPERSUIT+1];
-	int suitcounts[4][CARDSPERSUIT+1];
+	int i,j,count,straight;
+	int ranks[CARDSPERSUIT+1];
 
-	// 0 out all ranks
+	straight = 0;
+
 	for (i = 0;i < CARDSPERSUIT+1;i++) {
-		rankcounts[i] = 0;
-		suitcounts[CLUBS][i] = 0;
-		suitcounts[DIAMONDS][i] = 0;
-		suitcounts[HEARTS][i] = 0;
-		suitcounts[SPADES][i] = 0;
+		ranks[i] = 0;
 	}
 
-	// Count the number of appearances of each rank
 	for (i = 0;i < NUMTABLECARDS;i++) {
-		// Make sure that ace is counted as high and low for straight
+		if (i < NUMHOLECARDS) {
+			ranks[s->cards[i]->rank-1] += 1;
+			if (s->cards[i]->rank == A_LOW) {
+				ranks[A_HIGH-1] += 1;
+			}
+		}
+		ranks[t->cards[i]->rank-1] += 1;
 		if (t->cards[i]->rank == A_LOW) {
-			rankcounts[A_LOW-1] += 1;
-			rankcounts[A_HIGH-1] += 1;
-			suitcounts[determineSuit(t->cards[i])][A_LOW-1] += 1;
-			suitcounts[determineSuit(t->cards[i])][A_HIGH-1] += 1;
-		}
-		else {
-			rankcounts[t->cards[i]->rank-1] += 1;
-			suitcounts[determineSuit(t->cards[i])][t->cards[i]->rank-1] += 1;
+			ranks[A_HIGH-1] += 1;
 		}
 	}
 
-	// Add the number of each rank from a seats hole cards
-	for (i = 0;i < NUMHOLECARDS;i++) {
-		if (s->cards[i]->rank == A_LOW) {
-			rankcounts[A_LOW-1] += 1;
-			rankcounts[A_HIGH-1] += 1;
-			suitcounts[determineSuit(s->cards[i])][A_LOW-1] += 1;
-			suitcounts[determineSuit(s->cards[i])][A_HIGH-1] += 1;
-		}
-		else {
-			rankcounts[s->cards[i]->rank-1] += 1;
-			suitcounts[determineSuit(s->cards[i])][s->cards[i]->rank-1] += 1;	
-		}
-	}
-
-	// This is i > 3 to account for the window of size 5
-	// Go from high card to low to prevent counting a higher flush as a lower one
-	for (i = CARDSPERSUIT+1;i > 3;i--) {
+	for (i = CARDSPERSUIT;i > 3;i--) {
 		count = 0;
-		// Check window
 		for (j = i;j > i-5;j--) {
-			if (rankcounts[j] >= 1) {
+			if (ranks[j] >= 1) {
 				count += 1;
 			}
 		}
-		// See if a straight is present
 		if (count == 5) {
-			// I+1 since I is the index, index+1 would be the actual rank
-			s->typeofhand = STRAIGHT;
-			for (k = 0;k < 5;k++) {
-				// keeping track of the suit does not matter, we already know that there is not a flush
-				s->hand[k]->rank = i+1-k;
-			}
-			return TRUE;
+			straight = i+1;
 		}
 	}
 
-	// No straight
-	return FALSE;
+	if (straight) {
+		for (i = 0;i < 5;i++) {
+			s->hand[i]->rank = straight-i;
+		}
+		s->typeofhand = STRAIGHT;
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
 
 }
 
