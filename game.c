@@ -495,6 +495,9 @@ int checkQuads(table *t,seat *s) {
 			}
 		}
 		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == A_LOW) {
+				ranksuits[RANK][i] = A_HIGH;
+			}
 			if (ranksuits[RANK][i] == s->hand[4]->rank) {
 				s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
 			}
@@ -556,6 +559,9 @@ int checkFullHouse(table *t,seat *s) {
 		s->hand[3]->rank = bottom;
 		s->hand[4]->rank = bottom;
 		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == A_HIGH) {
+				ranksuits[RANK][i] = A_HIGH;
+			}
 			if (ranksuits[RANK][i] == top) {
 				s->hand[toff]->suit = convertSuitInt(ranksuits[SUIT][i]);
 				toff += 1;
@@ -730,7 +736,9 @@ int checkTrips(table *t,seat *s) {
 	}
 
 	if (trips) {
-		// Trips A_LOW is not being converted
+		if (trips == A_LOW) {
+			trips = A_HIGH;
+		}
 		s->hand[0]->rank = trips;
 		s->hand[1]->rank = trips;
 		s->hand[2]->rank = trips;
@@ -745,6 +753,9 @@ int checkTrips(table *t,seat *s) {
 			}
 		}
 		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == A_LOW) {
+				ranksuits[RANK][i] = A_HIGH;
+			}
 			if (ranksuits[RANK][i] == trips) {
 				s->hand[toff]->suit = convertSuitInt(ranksuits[SUIT][i]);
 				toff += 1;
