@@ -1,6 +1,4 @@
-// print.c
-
-#include "print.h"
+#include "headers/print.h"
 
 void printCard(card *c) {
 

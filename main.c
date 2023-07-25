@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "structures.h"
-#include "print.h"
-#include "game.h"
+#include "headers/structures.h"
+#include "headers/print.h"
+#include "headers/game.h"
 
 int main(int argc,char **argv) {
 	

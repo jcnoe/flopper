@@ -1,4 +1,4 @@
-#include "structures.h"
+#include "headers/structures.h"
 
 seat *initSeat(int balance,int id) {
 

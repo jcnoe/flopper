@@ -1,4 +1,4 @@
-#include "game.h"
+#include "headers/game.h"
 
 void startRound(table *t,deck *d) {
 
