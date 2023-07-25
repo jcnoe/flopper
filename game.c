@@ -559,7 +559,7 @@ int checkFullHouse(table *t,seat *s) {
 		s->hand[3]->rank = bottom;
 		s->hand[4]->rank = bottom;
 		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
-			if (ranksuits[RANK][i] == A_HIGH) {
+			if (ranksuits[RANK][i] == A_LOW) {
 				ranksuits[RANK][i] = A_HIGH;
 			}
 			if (ranksuits[RANK][i] == top) {
@@ -778,14 +778,17 @@ int checkTrips(table *t,seat *s) {
 
 int checkTwoPair(table *t,seat *s) {
 
-	int i,toppair,bottompair,pair1,pair2,count;
+	int i,toppair,bottompair,pair1,pair2,count,toff,boff;
 	int ranks[CARDSPERSUIT];
-	
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
+
 	toppair = 0;
 	bottompair = 0;
 	pair1 = 0;
 	pair2 = 0;
 	count = 0;
+	toff = 0;
+	boff = 2;
 
 	for (i = 0;i < CARDSPERSUIT;i++) {
 		ranks[i] = 0;
@@ -794,6 +797,8 @@ int checkTwoPair(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);		
 			if (ranks[s->cards[i]->rank-1] == 2 && pair1 == 0) {
 				pair1 = s->cards[i]->rank;
 			}
@@ -802,6 +807,8 @@ int checkTwoPair(table *t,seat *s) {
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);	
 		if (ranks[t->cards[i]->rank-1] == 2 && pair1 == 0) {
 			pair1 = t->cards[i]->rank;
 		}
@@ -838,6 +845,22 @@ int checkTwoPair(table *t,seat *s) {
 					s->hand[4]->rank = i+1;
 					count += 1;
 				}
+			}
+		}
+		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == A_LOW) {
+				ranksuits[RANK][i] = A_HIGH;
+			}
+			if (ranksuits[RANK][i] == toppair) {
+				s->hand[toff]->suit = convertSuitInt(ranksuits[SUIT][i]);
+				toff += 1;
+			}
+			else if (ranksuits[RANK][i] == bottompair) {
+				s->hand[boff]->suit = convertSuitInt(ranksuits[SUIT][i]);
+				boff += 1;
+			}
+			else if (ranksuits[RANK][i] == s->hand[4]->rank) {
+				s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
 			}
 		}
 		s->typeofhand = TWOPAIR;
