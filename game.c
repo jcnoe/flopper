@@ -459,10 +459,10 @@ int checkQuads(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);
 			if (ranks[s->cards[i]->rank-1] == 4) {
 				quads = s->cards[i]->rank;
-				ranksuits[RANK][i] = s->cards[i]->rank;
-				ranksuits[SUIT][i] = determineSuit(s->cards[i]);
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
@@ -631,6 +631,7 @@ int checkStraight(table *t,seat *s) {
 
 	int i,j,count,straight;
 	int ranks[CARDSPERSUIT+1];
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
 
 	straight = 0;
 
@@ -641,11 +642,15 @@ int checkStraight(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);
 			if (s->cards[i]->rank == A_LOW) {
 				ranks[A_HIGH-1] += 1;
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);	
 		if (t->cards[i]->rank == A_LOW) {
 			ranks[A_HIGH-1] += 1;
 		}
@@ -666,6 +671,23 @@ int checkStraight(table *t,seat *s) {
 	if (straight) {
 		for (i = 0;i < 5;i++) {
 			s->hand[i]->rank = straight-i;
+		}
+		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == s->hand[0]->rank) {
+				s->hand[0]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}
+			else if (ranksuits[RANK][i] == s->hand[1]->rank) {
+				s->hand[1]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}
+			else if (ranksuits[RANK][i] == s->hand[2]->rank) {
+				s->hand[2]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}	
+			else if (ranksuits[RANK][i] == s->hand[3]->rank) {
+				s->hand[3]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}
+			else if (ranksuits[RANK][i] == s->hand[4]->rank) {
+				s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}
 		}
 		s->typeofhand = STRAIGHT;
 		return TRUE;
