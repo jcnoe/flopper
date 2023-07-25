@@ -36,7 +36,7 @@ int main(int argc,char **argv) {
 	int straight = possibleStraight(t);
 	for (i = 0;i < t->seats;i++) {
 		determineHand(t,s,qfh,flush,straight);
-		if (s->typeofhand == STRAIGHT) {
+		if (s->typeofhand >= TRIPS) {
 			printHoleCards(s);
 			printHand(s);
 		}

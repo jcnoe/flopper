@@ -132,10 +132,20 @@ void advanceButton(table *t) {
 // Should only be called when there is valid action behind
 void advanceAction(table *t) {
 
+	int active = FALSE;
 	seat *s;
 	
-	// TODO add logic to skip over those who have already folded
 	s = t->action->next;
+
+	while (!active) {
+		if (s->active) {
+			active = TRUE;
+		}
+		else {
+			s = s->next;
+		}
+	}
+
 	t->action = s;
 
 }
