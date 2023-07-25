@@ -874,11 +874,13 @@ int checkTwoPair(table *t,seat *s) {
 
 int checkPair(table *t,seat *s) {
 
-	int i,pair,count;
+	int i,pair,count,toff;
 	int ranks[CARDSPERSUIT];
-	
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
+
 	pair = 0;
 	count = 0;
+	toff = 0;
 
 	for (i = 0;i < CARDSPERSUIT;i++) {
 		ranks[i] = 0;
@@ -887,17 +889,24 @@ int checkPair(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);	
 			if (ranks[s->cards[i]->rank-1] == 2) {
 				pair = s->cards[i]->rank;
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);	
 		if (ranks[t->cards[i]->rank-1] == 2) {
 			pair = t->cards[i]->rank;
 		}
 	}
 
 	if (pair) {
+		if (pair == A_LOW) {
+			pair = A_HIGH;
+		}
 		s->hand[0]->rank = pair;
 		s->hand[1]->rank = pair;
 		if (ranks[0] == A_LOW) {
@@ -908,6 +917,24 @@ int checkPair(table *t,seat *s) {
 			if (ranks[i] == 1 && i+1 != pair && count != 3) {
 				s->hand[count+2]->rank = i+1;
 				count += 1;
+			}
+		}
+		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == A_LOW) {
+				ranksuits[RANK][i] = A_HIGH;
+			}
+			if (ranksuits[RANK][i] == pair) {
+				s->hand[toff]->suit = convertSuitInt(ranksuits[SUIT][i]);
+				toff += 1;
+			}
+			else if (ranksuits[RANK][i] == s->hand[2]->rank) {
+				s->hand[2]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}
+			else if (ranksuits[RANK][i] == s->hand[3]->rank) {
+				s->hand[3]->suit = convertSuitInt(ranksuits[SUIT][i]);
+			}	
+			else if (ranksuits[RANK][i] == s->hand[4]->rank) {
+				s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
 			}
 		}
 		s->typeofhand = ONEPAIR;
