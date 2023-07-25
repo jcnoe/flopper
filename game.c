@@ -950,7 +950,8 @@ int checkHigh(table *t,seat *s) {
 
 	int i,count;
 	int ranks[CARDSPERSUIT];
-	
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
+
 	count = 0;
 
 	for (i = 0;i < CARDSPERSUIT;i++) {
@@ -960,8 +961,12 @@ int checkHigh(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);	
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);		
 	}
 
 	if (ranks[0] == A_LOW) {
@@ -972,6 +977,26 @@ int checkHigh(table *t,seat *s) {
 		if (ranks[i] == 1 && count != 5) {
 			s->hand[count]->rank = i+1;
 			count += 1;
+		}
+	}
+	for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+		if (ranksuits[RANK][i] == A_LOW) {
+			ranksuits[RANK][i] = A_HIGH;
+		}
+		if (ranksuits[RANK][i] == s->hand[0]->rank) {
+			s->hand[0]->suit = convertSuitInt(ranksuits[SUIT][i]);
+		}
+		else if (ranksuits[RANK][i] == s->hand[1]->rank) {
+			s->hand[1]->suit = convertSuitInt(ranksuits[SUIT][i]);
+		}
+		else if (ranksuits[RANK][i] == s->hand[2]->rank) {
+			s->hand[2]->suit = convertSuitInt(ranksuits[SUIT][i]);
+		}
+		else if (ranksuits[RANK][i] == s->hand[3]->rank) {
+			s->hand[3]->suit = convertSuitInt(ranksuits[SUIT][i]);
+		}	
+		else if (ranksuits[RANK][i] == s->hand[4]->rank) {
+			s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
 		}
 	}
 	s->typeofhand = HIGH;
