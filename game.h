@@ -31,5 +31,6 @@ int checkTwoPair(table *,seat *);
 int checkPair(table *,seat *);
 int checkHigh(table *,seat *);
 int determineSuit(card *);
+char convertSuitInt(int);
 
 #endif

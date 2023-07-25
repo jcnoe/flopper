@@ -476,7 +476,7 @@ int checkQuads(table *t,seat *s) {
 		s->hand[2]->rank = quads;
 		s->hand[2]->suit = 'h';
 		s->hand[3]->rank = quads;
-		s->hand[4]->suit = 's';
+		s->hand[3]->suit = 's';
 		if (ranks[0] == A_LOW) {
 			s->hand[4]->rank = A_HIGH;
 			count += 1;
@@ -498,11 +498,14 @@ int checkQuads(table *t,seat *s) {
 
 int checkFullHouse(table *t,seat *s) {
 	
-	int i,top,bottom;
+	int i,top,bottom,toff,boff;
 	int ranks[CARDSPERSUIT];
-	
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
+
 	top = 0;
 	bottom = 0;
+	toff = 0;
+	boff = 0;
 
 	for (i = 0;i < CARDSPERSUIT;i++) {
 		ranks[i] = 0;
@@ -511,8 +514,12 @@ int checkFullHouse(table *t,seat *s) {
 	for (i = 0;i < NUMTABLECARDS;i++) {
 		if (i < NUMHOLECARDS) {
 			ranks[s->cards[i]->rank-1] += 1;
+			ranksuits[RANK][i] = s->cards[i]->rank;
+			ranksuits[SUIT][i] = determineSuit(s->cards[i]);
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);
 	}
 
 	if (ranks[0] == 3) {
@@ -536,6 +543,16 @@ int checkFullHouse(table *t,seat *s) {
 		s->hand[2]->rank = top;
 		s->hand[3]->rank = bottom;
 		s->hand[4]->rank = bottom;
+		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == top) {
+				s->hand[toff]->suit = convertSuitInt(ranksuits[SUIT][i]);
+				toff += 1;
+			}
+			else if (ranksuits[RANK][i] == bottom) {
+				s->hand[3+boff]->suit = convertSuitInt(ranksuits[SUIT][i]);
+				boff += 1;
+			}
+		}
 		s->typeofhand = FULLHOUSE;
 		return TRUE;
 	}
@@ -849,13 +866,13 @@ int checkHigh(table *t,seat *s) {
 }
 
 int determineSuit(card *c) {
-	if (c->rank == 'c') {
+	if (c->suit == 'c') {
 		return CLUBS;
 	}
-	else if (c->rank == 'd') {
+	else if (c->suit == 'd') {
 		return DIAMONDS;
 	}
-	else if (c->rank == 'h') {
+	else if (c->suit == 'h') {
 		return HEARTS;
 	}
 	else {
@@ -863,3 +880,17 @@ int determineSuit(card *c) {
 	}
 }
 
+char convertSuitInt(int suit) {
+	if (suit == CLUBS) {
+		return 'c';
+	}
+	else if (suit == DIAMONDS) {
+		return 'd';
+	}
+	else if (suit == HEARTS) {
+		return 'h';
+	}
+	else {
+		return 's';
+	}
+}

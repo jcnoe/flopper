@@ -32,6 +32,8 @@
 #define FULLHOUSE 6
 #define QUADS 7
 #define STRAIGHTFLUSH 8
+#define RANK 0
+#define SUIT 1
 
 typedef struct card{
 	unsigned char rank;
