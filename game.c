@@ -447,6 +447,7 @@ int checkQuads(table *t,seat *s) {
 
 	int i,quads,count;
 	int ranks[CARDSPERSUIT];
+	int ranksuits[2][NUMTABLECARDS+NUMHOLECARDS];
 
 	quads = 0;
 	count = 0;
@@ -460,9 +461,13 @@ int checkQuads(table *t,seat *s) {
 			ranks[s->cards[i]->rank-1] += 1;
 			if (ranks[s->cards[i]->rank-1] == 4) {
 				quads = s->cards[i]->rank;
+				ranksuits[RANK][i] = s->cards[i]->rank;
+				ranksuits[SUIT][i] = determineSuit(s->cards[i]);
 			}
 		}
 		ranks[t->cards[i]->rank-1] += 1;
+		ranksuits[RANK][i+NUMHOLECARDS] = t->cards[i]->rank;
+		ranksuits[SUIT][i+NUMHOLECARDS] = determineSuit(t->cards[i]);
 		if (ranks[t->cards[i]->rank-1] == 4) {
 			quads = t->cards[i]->rank;
 		}
@@ -481,10 +486,17 @@ int checkQuads(table *t,seat *s) {
 			s->hand[4]->rank = A_HIGH;
 			count += 1;
 		}
-		for (i = CARDSPERSUIT-1;i > 0;i--) {
-			if (ranks[i] == 1 && i+1 != quads && count != 1) {
-				s->hand[4]->rank = i+1;
-				count += 1;
+		else {
+			for (i = CARDSPERSUIT-1;i > 0;i--) {
+				if (ranks[i] == 1 && i+1 != quads && count != 1) {
+					s->hand[4]->rank = i+1;
+					count += 1;
+				}
+			}
+		}
+		for (i = 0;i < NUMTABLECARDS+NUMHOLECARDS;i++) {
+			if (ranksuits[RANK][i] == s->hand[4]->rank) {
+				s->hand[4]->suit = convertSuitInt(ranksuits[SUIT][i]);
 			}
 		}
 		s->typeofhand = QUADS;
