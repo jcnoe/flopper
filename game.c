@@ -261,6 +261,110 @@ void determineHand(table *t,seat *s,int qfh,int flush,int straight) {
 
 }
 
+int compareHand(seat *s1,seat *s2) {
+
+	int i;
+
+	if (s1->typeofhand > s2->typeofhand) {
+		return LEFT;
+	}
+	else if (s1->typeofhand < s2->typeofhand) {
+		return RIGHT;
+	}
+	else {
+		if (s1->typeofhand == STRAIGHTFLUSH || s1->typeofhand == STRAIGHT) {
+			if (s1->hand[0]->rank > s2->hand[0]->rank) {
+				return LEFT;
+			}
+			else if (s1->hand[0]->rank < s2->hand[0]->rank) {
+				return RIGHT;
+			}
+			else {
+				return CHOP;
+			}
+		}
+		else if (s1->typeofhand == QUADS || s1->typeofhand == TWOPAIR) {
+			if (s1->hand[4]->rank > s2->hand[4]->rank) {
+				return LEFT;
+			}
+			else if (s1->hand[4]->rank < s2->hand[4]->rank) {
+				return RIGHT;
+			}
+			else {
+				return CHOP;
+			}
+		}
+		else if (s1->typeofhand == FULLHOUSE) {
+			if (s1->hand[0]->rank > s2->hand[0]->rank) {
+				return LEFT;
+			}
+			else if (s1->hand[0]->rank < s2->hand[0]->rank) {
+				return RIGHT;
+			}
+			else {
+				if (s1->hand[3]->rank > s2->hand[3]->rank) {
+					return RIGHT;
+				}
+				else if (s1->hand[3]->rank < s2->hand[3]->rank) {
+					return RIGHT;
+				}
+				else {
+					return CHOP;
+				}
+			}
+		}
+		else if (s1->typeofhand == FLUSH || s1->typeofhand == HIGH) {
+			for (i = 0;i < 5;i++) {
+				if (s1->hand[i]->rank > s2->hand[i]->rank) {
+					return LEFT;
+				}
+				else if (s1->hand[i]->rank < s2->hand[i]->rank) {
+					return RIGHT;
+				}
+			}
+			return CHOP;
+		}
+		else if (s1->typeofhand == TRIPS) {
+			if (s1->hand[0]->rank > s2->hand[0]->rank) {
+				return LEFT;
+			}
+			else if (s1->hand[0]->rank < s2->hand[0]->rank) {
+				return RIGHT;
+			}	
+			else {
+				for (i = 3;i < 5;i++) {
+					if (s1->hand[i]->rank > s2->hand[i]->rank) {
+						return LEFT;
+					}
+					else if (s1->hand[i]->rank < s2->hand[i]->rank) {
+						return RIGHT;
+					}
+				}
+				return CHOP;
+			}
+		}
+		else {
+			if (s1->hand[0]->rank > s2->hand[0]->rank) {
+				return LEFT;
+			}
+			else if (s1->hand[0]->rank < s2->hand[0]->rank) {
+				return RIGHT;
+			}
+			else {
+				for (i = 2;i < 5;i++) {
+					if (s1->hand[i]->rank > s2->hand[i]->rank) {
+						return LEFT;
+					}
+					else if (s1->hand[i]->rank < s2->hand[i]->rank) {
+						return RIGHT;
+					}
+				}
+				return CHOP;
+			}
+		}
+	}
+}
+
 int possibleFlush(table *t) {
 
 	int i;

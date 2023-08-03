@@ -34,6 +34,9 @@
 #define STRAIGHTFLUSH 8
 #define RANK 0
 #define SUIT 1
+#define LEFT 0
+#define RIGHT 1
+#define CHOP 2
 
 typedef struct card{
 	unsigned char rank;
