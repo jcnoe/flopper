@@ -158,13 +158,21 @@ void dealHoleCards(table *t,deck *d) {
 	// Deal 1st card to every player
 	s = t->button->next;
 	for (i = 0;i < t->seats;i++) {
-		s->cards[0] = drawCard(d);
+		s->cards[0] = drawCard(d);	
+		if (!validCard(s->cards[0])) {
+			printDealingError(PFLOP);
+			exit(1);
+		}
 		s = s->next;
 	}
 	// Deal 2nd card to every player
 	s = t->button->next;
 	for (i = 0;i < t->seats;i++) {
 		s->cards[1] = drawCard(d);
+		if (!validCard(s->cards[1])) {
+			printDealingError(PFLOP);
+			exit(1);
+		}
 		s = s->next;
 	}
 
@@ -176,12 +184,24 @@ void dealTableCards(table *t,deck *d,int street) {
 		t->cards[0] = drawCard(d);
 		t->cards[1] = drawCard(d);
 		t->cards[2] = drawCard(d);
+		if (!validCard(t->cards[0]) || !validCard(t->cards[1]) || !validCard(t->cards[2])) {
+			printDealingError(FLOP);
+			exit(1);
+		}
 	}
 	else if (street == TURN) {
 		t->cards[3] = drawCard(d);
+		if (!validCard(t->cards[3])) {
+			printDealingError(TURN);
+			exit(1);
+		}
 	}
 	else {
 		t->cards[4] = drawCard(d);
+		if (!validCard(t->cards[4])) {
+			printDealingError(RIVER);
+			exit(1);
+		}
 	}
 	
 }
@@ -1136,4 +1156,34 @@ char convertSuitInt(int suit) {
 	else {
 		return 's';
 	}
+}
+
+int validCard(card *c) {
+	
+	if (!c) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+
+	// This should never happen
+	return 0;
+}
+
+void printDealingError(int situation) {
+
+	switch (situation) {
+		case PFLOP:
+			printf("Error occured when dealing hole");
+		case FLOP:
+			printf("Error occured when dealing flop");
+		case TURN:
+			printf("Error occured when dealing turn");
+		case RIVER:
+			printf("Error occurred when dealing river");
+		default:
+			printf("Unexpected Behavior");
+	}
+	printf("\n");
 }

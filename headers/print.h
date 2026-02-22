@@ -17,5 +17,6 @@ void printRiver(table *);
 void printTableCards(table *);
 void printHand(seat *);
 void printSplash(void);
+//void printDealingError(int);
 
 #endif

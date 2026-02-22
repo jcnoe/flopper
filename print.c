@@ -22,8 +22,6 @@ void printSplash(void)
     );
 }
 
-
-
 void printCard(card *c) {
 
 	if (!c) {
