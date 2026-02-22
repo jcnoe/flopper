@@ -16,5 +16,6 @@ void printTurn(table *);
 void printRiver(table *);
 void printTableCards(table *);
 void printHand(seat *);
+void printSplash(void);
 
 #endif

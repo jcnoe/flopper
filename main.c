@@ -1,5 +1,5 @@
 // Chandler Noe
-// Flopper - A Texas Hold'em engine
+// Flopper - A Texas Hold'em engine written in C
 // 2023
 
 #include <stdio.h>
@@ -16,6 +16,9 @@ int main(int argc,char **argv) {
 
 	// Seed random number generator
 	srand(time(NULL));
+
+	//Splash Screen
+	printSplash();
 
 	// Initialize table and deck
 	t = initTable(9);
